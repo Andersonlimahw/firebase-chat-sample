@@ -54,7 +54,7 @@ const Chat = () => {
     }
   };
 
-  const sendMessage = async (userName: string, message: string) => {
+  const sendMessage = async (userName, message) => {
     return create({
         collectionName: 'messages', 
         payload: {
@@ -84,7 +84,7 @@ const Chat = () => {
       )}
 
       <div>
-        {messages.map((msg : any) => (
+        {messages.map((msg) => (
           <div key={msg.id}>
             <p>{msg.user}: {msg.message}</p>
           </div>
