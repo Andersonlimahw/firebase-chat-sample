@@ -11,23 +11,39 @@ import { MessageContainer } from './Components/MessageContainer';
 import { IMessageProps, Message } from './Components/Message';
 import { SendMessageInput } from './Components/SendMessage';
 import { Header } from './Components/Header';
+import { useChatStore } from '../../store/hooks/use-chat-store';
+import { EActionType, IAction } from '../../store/flux/actions';
 
 export const Chat = () => {
-  const [user, setUser] = useState<any>(null);
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+  const chatStore = useChatStore((state: any) => state);
+  const { 
+      dispatch, 
+      user, 
+      selectedContact, 
+      selectedContactMessages
+    } = chatStore;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser(user);
+        dispatch({
+          type: EActionType.SET_USER,
+          payload: {
+            user
+          }
+        })
       } else {
-        setUser(null);
+        dispatch({
+          type: EActionType.SET_USER,
+          payload: {
+            user: null
+          }
+        })
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [auth]);
 
   async function subscribeToMessages(callback: any) {
     const query = await get({ collectionName: 'messages' }).then(data => data);
@@ -44,7 +60,16 @@ export const Chat = () => {
   useEffect(() => {
     (async () => {
       const unsubscribe = await subscribeToMessages((updatedMessages: any) => {
-        setMessages(updatedMessages);
+        dispatch({
+          type: EActionType.SET_MESSAGES, 
+          payload: {
+            messages: updatedMessages
+          }
+        });
+        dispatch({
+          type: EActionType.LOAD_CONTACTS, 
+          payload: { }
+        });
       });
 
       return () => unsubscribe();
@@ -67,32 +92,26 @@ export const Chat = () => {
       <div className="container mx-auto mt-[-128px]">
         <div className="py-6 h-screen">
           <div className="flex border border-grey rounded shadow-lg h-full">
-            {user ? (
-              <div>
-                <h2>Bem-vindo, {user.displayName}!</h2>
-                <button onClick={handleLogout}>Sair</button>
-              </div>
+            {!user ? (
+              <>
+                {/* Left */}
+                <ContactList />
+
+                {/* Right */}
+                <div className="w-2/3 border flex flex-col">
+                  <MessageContainer>
+                    <Header />
+                    {selectedContactMessages.map((msg: IMessageProps) => (
+                      <Message key={msg.id} {...msg} />
+                    ))}
+                  </MessageContainer>
+                  <SendMessageInput />
+                </div>
+                
+              </>
             ) : (
               <Login />
             )}
-
-            {/* Left */}
-            <ContactList />
-
-            {/* Right */}
-            <div className="w-2/3 border flex flex-col"> 
-              {/* TODO: messages from selected contact */}
-
-              <MessageContainer>
-                <Header title={'Anderson Lima'} description={'Living...'} avatarUrl={'https://avatars.githubusercontent.com/u/15092575?s=48&v=4'} />
-                {messages.map((msg: IMessageProps) => (
-                  <Message key={msg.id} {...msg} />
-                ))}
-              </MessageContainer>
-            </div>  
-
-            {user && ( <SendMessageInput />)}
-
           </div>
         </div>
       </div>

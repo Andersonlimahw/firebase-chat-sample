@@ -4,28 +4,38 @@ import { initialState } from "./initial-state";
 
 export const reducer = (state: any, { type, payload }: IAction) => {
   switch (type) {
-    case EActionType.SELECT_USER:
+    case EActionType.SET_USER:
       return {
+        ...initialState,
         ...state,
-        selectedUser: payload.user,
+        user: payload.user,
+      };   
+    case EActionType.SET_MESSAGES:
+      return {
+        ...initialState,
+        ...state,
+        messages: payload.messages,
       };
-    case EActionType.LOAD_USER_MESSAGES:
+    case EActionType.SELECT_CONTACT:
       return {
+        ...initialState,
         ...state,
-        messages: state.messages.filter(
+        selectedContact: payload.user,
+        selectedContanctMessages: state.messages.filter(
           (message: IMessageProps) =>
-            message.to.toLowerCase() === state.selectedUser.userName
+            message.from.toLowerCase() === state.user.userName.toLowercase()
         ),
       };
     case EActionType.LOAD_CONTACTS:
       return {
+        ...initialState,
         ...state,
-        messages: state.messages.map((message: IMessageProps) => {
-          avatarUrl: message.user.avatarUrl;
-          userName: message.userName;
-          time: message.time;
-          status: `${message.message.slice(0,10)}...`;
-        }),
+        contactList: state.messages.map((message: IMessageProps) => ({
+          avatarUrl: message.user.avatarUrl,
+          userName: message.from,
+          time: message.time,
+          status: `${message.message.slice(0, 10)}...`,
+        })),
       };
   }
 };
