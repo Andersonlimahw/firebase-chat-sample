@@ -1,18 +1,23 @@
 import { useState } from "react";
 import { create } from "../../../../services/firebase";
+import { IState, useChat } from "../../../../store/hooks/use-chat-store";
 
 export const SendMessageInput = () => {
     const [message, setMessage] = useState('');
-    const userName = 'Lemon' // TODO: get from google
+    const chatStore = useChat((state: any) => state);
+    const { user, selectedContact } = chatStore as IState;
 
     const sendMessage = async (message: string) => {
         return create({
-            collectionName: 'messages',
+            collectionName: 'chat',
             payload: {
-                userName,
                 message,
-                from: userName,
-                to: 'andersonlimahw', // Todo : Get from selected contact
+                userId: user?.uid,                
+                from: user?.displayName,
+                userName: user?.displayName,
+                photoURL: user?.photoURL,
+                email: user?.email,
+                to: selectedContact?.displayName,
                 sent: true,
                 readed: false,
                 timestamp: new Date(),
@@ -28,7 +33,7 @@ export const SendMessageInput = () => {
     };
 
     return (
-        <div className="bg-grey-lighter px-4 py-4 flex items-center">            
+        <div className="bg-grey-lighter px-4 py-4 flex items-center">
             <div className="flex-1 mx-4">
                 <input
                     className="w-full border rounded px-2 py-2"
