@@ -1,9 +1,12 @@
 export interface IMessageProps { 
     id: string;
+    to: string;
     userName: string;
     message: string;
     time: string;
+    user: any;
 }
+
 export const Message = ({userName, message, time } : IMessageProps) => {
     return(
         <div className="flex mb-2">

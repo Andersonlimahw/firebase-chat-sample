@@ -28,7 +28,7 @@ function App() {
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
         <Login />
-        {/* <Chat /> */}
+        <Chat />
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
