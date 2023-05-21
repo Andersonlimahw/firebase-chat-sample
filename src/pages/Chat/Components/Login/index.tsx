@@ -1,5 +1,5 @@
 import React from 'react';
-import { handleGoogleLogin } from '../../services/firebase/firebaseService';
+import { handleGoogleLogin } from '../../../../services/firebase/firebaseService';
 
 export const Login = () => {
     return (
