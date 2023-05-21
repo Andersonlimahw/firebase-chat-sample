@@ -41,16 +41,16 @@ export const reducer = (state: any, { type, payload }: IAction) => {
       return {
         ...initialState,
         ...state,
-        messages: payload.messages,
+        messages: payload.messages.filter((message : any) => message.to === state.user.email),
       };
     case EActionType.SELECT_CONTACT:
       return {
         ...initialState,
         ...state,
         selectedContact: payload.user,
-        selectedContanctMessages: state.messages.filter(
-          (message: IMessageProps) =>
-            message.from.toLowerCase() != ""),
+        selectedContactMessages: state.messages.filter(
+          (message: any) =>
+            message.from === payload.email),
       };
     case EActionType.LOAD_CONTACTS:
       return {

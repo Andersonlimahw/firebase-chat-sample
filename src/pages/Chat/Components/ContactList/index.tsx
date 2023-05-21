@@ -26,8 +26,8 @@ export const ContactList = () => {
 
             <div className="bg-grey-lighter flex-1 overflow-auto">
                 {
-                    contactList && contactList.map((contact : IContactItemProps) =>  (
-                        <ContactListItem key={contact.id} {...contact} />
+                    contactList && contactList.map((contact : IContactItemProps, index: number) =>  (
+                        <ContactListItem key={`${contact.id}__${index}`} {...contact} />
                     ))
                 }
                

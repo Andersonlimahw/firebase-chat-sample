@@ -8,6 +8,7 @@ export interface IContactItemProps {
     displayName: string;
     time: string;
     status: string;
+    email: string;
 }
 
 export const ContactListItem = (item: IContactItemProps) => {
@@ -20,8 +21,8 @@ export const ContactListItem = (item: IContactItemProps) => {
             type: EActionType.SELECT_CONTACT, 
             payload: {                
                 ...item,
-                user: item, 
-                userName: item.displayName || '',
+                fromId: item.id,
+                email: item.email,
             }
         });
     }

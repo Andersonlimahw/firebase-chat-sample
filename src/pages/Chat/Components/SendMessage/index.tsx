@@ -12,12 +12,14 @@ export const SendMessageInput = () => {
             collectionName: 'chat',
             payload: {
                 message,
-                userId: user?.uid,                
-                from: user?.displayName,
+                userId: user?.uid,             
                 userName: user?.displayName,
                 photoURL: user?.photoURL,
                 email: user?.email,
-                to: selectedContact?.displayName,
+                from: user?.email,
+                fromId: user?.uid,
+                toId: selectedContact?.uid,
+                to: selectedContact?.email,
                 sent: true,
                 readed: false,
                 timestamp: new Date(),
@@ -38,6 +40,7 @@ export const SendMessageInput = () => {
                 <input
                     className="w-full border rounded px-2 py-2"
                     type="text"
+                    value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     onSubmit={() => handleSendMessage()}
                     onBlur={() => handleSendMessage()}

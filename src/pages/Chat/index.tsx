@@ -56,17 +56,6 @@ export const Chat = () => {
     });
   };
 
-  useEffect(() => {
-    if(!selectedContact) {
-      dispatch({
-        type: EActionType.SELECT_CONTACT, 
-        payload: {
-          user: user
-        }
-      });
-    }
-    
-  }, [selectedContact])
 
   useEffect(() => {
     (async () => {
