@@ -1,5 +1,5 @@
 export interface IContactItemProps {
-    avatarUrl: string;
+    photoUrl: string;
     message: string;
     userName: string;
     time: string;
@@ -10,7 +10,7 @@ export const ContactListItem = (item: IContactItemProps) => {
     return (
         <div className="bg-white px-3 flex items-center hover:bg-grey-lighter cursor-pointer">
             <div>
-                <img className="h-12 w-12 rounded-full" src={item.avatarUrl} />
+                <img className="h-12 w-12 rounded-full" src={item.photoUrl} />
             </div>
             <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
                 <div className="flex items-bottom justify-between">

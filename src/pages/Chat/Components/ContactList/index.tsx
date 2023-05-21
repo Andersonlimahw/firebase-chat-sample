@@ -1,7 +1,9 @@
+import { useChat } from "../../../../store/hooks/use-chat-store";
 import { ContactListItem } from "./ContactListItem"
 
 export const ContactList = () => {
     // TODO: connect to constact list provider
+    const contactList = useChat((state: any) => state.contactList);
     return (
         <div className="w-1/3 border flex flex-col">
 
@@ -21,13 +23,18 @@ export const ContactList = () => {
 
             {/* <!-- Contacts --> */}
             <div className="bg-grey-lighter flex-1 overflow-auto">
-                <ContactListItem
-                    avatarUrl={"https://avatars.githubusercontent.com/u/15092575?s=48&v=4"}
-                    message={"Hi..."}
-                    userName={"Anderson Lima"}
-                    time={"12:00 am"}
-                    status={"Coding..."}
-                />
+                {
+                    contactList && contactList.map(() =>  (
+                        <ContactListItem
+                        photoUrl={"https://avatars.githubusercontent.com/u/15092575?s=48&v=4"}
+                        message={"Hi..."}
+                        userName={"Anderson Lima"}
+                        time={"12:00 am"}
+                        status={"Coding..."}
+                        />
+                    ))
+                }
+               
             </div>
 
         </div>

@@ -31,10 +31,10 @@ export const reducer = (state: any, { type, payload }: IAction) => {
         ...initialState,
         ...state,
         contactList: state.messages.map((message: IMessageProps) => ({
-          avatarUrl: message.user.avatarUrl,
+          photoUrl: message.user?.photoURL,
           userName: message.from,
           time: message.time,
-          status: `${message.message.slice(0, 10)}...`,
+          status: `${message.message.slice(0, 4)}...`,
         })),
       };
   }

@@ -11,26 +11,28 @@ import { MessageContainer } from './Components/MessageContainer';
 import { IMessageProps, Message } from './Components/Message';
 import { SendMessageInput } from './Components/SendMessage';
 import { Header } from './Components/Header';
-import { useChatStore } from '../../store/hooks/use-chat-store';
+import { useChat } from '../../store/hooks/use-chat-store';
 import { EActionType, IAction } from '../../store/flux/actions';
 
 export const Chat = () => {
-  const chatStore = useChatStore((state: any) => state);
+  const chatStore = useChat((state: any) => state);
+
+  const [currentUser, setCurrentUser ] = useState<any>();
+
   const { 
       dispatch, 
-      user, 
-      selectedContact, 
-      selectedContactMessages
+      messages,
+      selectedContactMessages, 
+      user
     } = chatStore;
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user : any) => {
       if (user) {
+        setCurrentUser(user);
         dispatch({
           type: EActionType.SET_USER,
-          payload: {
-            user
-          }
+          payload: { user: user }
         })
       } else {
         dispatch({
@@ -43,7 +45,7 @@ export const Chat = () => {
     });
 
     return () => unsubscribe();
-  }, [auth]);
+  }, []);
 
   async function subscribeToMessages(callback: any) {
     const query = await get({ collectionName: 'messages' }).then(data => data);
@@ -52,7 +54,7 @@ export const Chat = () => {
       const updatedMessages = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
-      }));
+      }));     
       callback(updatedMessages);
     });
   };
@@ -92,7 +94,7 @@ export const Chat = () => {
       <div className="container mx-auto mt-[-128px]">
         <div className="py-6 h-screen">
           <div className="flex border border-grey rounded shadow-lg h-full">
-            {!user ? (
+            {user ? (
               <>
                 {/* Left */}
                 <ContactList />
@@ -101,7 +103,11 @@ export const Chat = () => {
                 <div className="w-2/3 border flex flex-col">
                   <MessageContainer>
                     <Header />
-                    {selectedContactMessages.map((msg: IMessageProps) => (
+                    {
+                      !selectedContactMessages || selectedContactMessages.length === 0 && (<p className='text-zinc-400'>Nenhuma mensagem encontrada...</p>)
+                    }
+
+                    {chatStore && messages.map((msg: IMessageProps) => (
                       <Message key={msg.id} {...msg} />
                     ))}
                   </MessageContainer>

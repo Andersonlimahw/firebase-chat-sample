@@ -34,7 +34,8 @@ export const SendMessageInput = () => {
                     className="w-full border rounded px-2 py-2"
                     type="text"
                     onChange={(e) => setMessage(e.target.value)}
-                    onSubmit={handleSendMessage}
+                    onSubmit={() => handleSendMessage()}
+                    onBlur={() => handleSendMessage()}
                 />
             </div>
             {/* TODO: phospro icon pra botão de enviar */}

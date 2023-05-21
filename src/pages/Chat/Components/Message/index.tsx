@@ -1,10 +1,12 @@
+import { IUser } from "../../../../store/hooks/use-chat-store";
+
 export interface IMessageProps { 
     id: string;
     to: string;
     from: string;
     message: string;
     time: string;
-    user: any;
+    user: IUser;
 }
 
 export const Message = ({from, message, time } : IMessageProps) => {
