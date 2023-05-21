@@ -11,7 +11,7 @@ export interface IUser {
   displayName: string;
 }
 
-interface IState { 
+export interface IState { 
   user?: IUser;
   messages: IMessageProps;
   selectedContact?: IUser;
