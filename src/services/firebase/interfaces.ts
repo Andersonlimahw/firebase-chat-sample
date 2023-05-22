@@ -24,6 +24,10 @@ export interface GetInput {
     collectionName: string;
 }
 
+export interface GetGroupedInput extends GetInput { 
+    email: string;
+}
+
 export interface GetResponse { 
     id: string;
     data: any;

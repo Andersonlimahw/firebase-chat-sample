@@ -10,7 +10,9 @@ import {
     doc,
     deleteDoc,
     getDoc, 
-    onSnapshot
+    onSnapshot,
+    collectionGroup,
+    where
 } from 'firebase/firestore';
 import { db , auth }  from './firebaseConfig';
 
@@ -23,13 +25,15 @@ import {
     DeleteInput,
     DeleteResponse,
     CreateInput,
-    CreateResponse
+    CreateResponse,
+    GetGroupedInput
 } from './interfaces';
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from '@firebase/auth';
 
 
 export const create = async ({ collectionName, payload } : CreateInput) : Promise<CreateResponse> => {
     try { 
+        console.log('[Firebase][Add] - Init - payload: ', payload);
         const response = await addDoc(collection(db, collectionName), {
             ...payload,
             created: Timestamp.now()
@@ -54,6 +58,21 @@ export const get = async ({ collectionName } : GetInput) => {
         return response;
     } catch(ex) {
         console.error('[Firebase][get] - Error: ', ex);
+        throw new Error(`Error to create document: ${ex}`);
+    }
+}
+
+export const getGroupdByEmail = async ({ collectionName, email } : GetGroupedInput) => {
+    try { 
+        let result;
+        const response = query(
+            collectionGroup(db, collectionName), 
+            where('to', '==', email)
+        );       
+        console.log('[Firebase][getGroupdByEmail] - Success - response: ', result, response);
+        return response;
+    } catch(ex) {
+        console.error('[Firebase][getGroupdByEmail] - Error: ', ex);
         throw new Error(`Error to create document: ${ex}`);
     }
 }
@@ -116,7 +135,7 @@ export const handleGoogleLogin = async () => {
       // Login com o Google bem-sucedido
     } catch (error) {
       console.log(error);
-      throw new Error(error);
+      throw new Error('Erro ao executar login.');
       // Tratar erros de login com o Google
     }
   };

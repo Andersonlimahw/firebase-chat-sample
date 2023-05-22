@@ -21,12 +21,14 @@ function groupContactsById(messages : any) {
 
 
 
-const mapContactList =  (messages : any) => messages.map((message: any) => ({
-  id: message.userId,
+const mapContactList =  (messages : any) => messages.map((message: IMessageProps) => ({
+  ...message,
+  id: message.id,
+  uid: message.uid,
   photoURL: message.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/694px-Unknown_person.jpg',
-  displayName: message.from,
+  displayName: message.displayName,
   time: message.time,
-  status: `${message.message.slice(0, 4)}...`,
+  status: `${message.message.slice(0, 10)}...`,
 }))
 
 export const reducer = (state: any, { type, payload }: IAction) => {

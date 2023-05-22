@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 
 import { onAuthStateChanged, signOut } from '@firebase/auth';
-import { auth, create, get } from '../../services/firebase';
+import { auth, create, get, getGroupdByEmail } from '../../services/firebase';
 
 import { onSnapshot } from 'firebase/firestore';
 import { Login } from './Components/Login';
@@ -88,7 +88,7 @@ export const Chat = () => {
 
   return (
     <div>
-      <div className="w-full h-32 bg-green-800" ></div>
+      <div className="w-full h-32 bg-zinc-600" ></div>
       <div className="container mx-auto mt-[-128px]">
         <div className="py-6 h-screen">
           <div className="flex border border-zinc-400 rounded shadow-lg h-full">
@@ -102,7 +102,7 @@ export const Chat = () => {
                   <MessageContainer>
                     <Header />
                     {
-                      !selectedContactMessages || selectedContactMessages.length === 0 && (<p className='text-zinc-400'>Envie uma mensagem para você como bloco de notas.</p>)
+                      !selectedContactMessages || selectedContactMessages.length === 0 && (<p className='text-zinc-400'>Selecione um contato para conversar.</p>)
                     }
 
                     {chatStore && selectedContactMessages.map((msg: IMessageProps) => (

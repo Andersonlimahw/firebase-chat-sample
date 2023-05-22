@@ -2,7 +2,17 @@ import { IMessageProps } from '../../pages/Chat/Components/Message/index';
 
 export const initialState = {
   messages: [],
-  user: undefined,
-  selectedContact: undefined, 
+  user: {
+    uid: '',
+    email: '',
+    photoURL: '',
+    displayName: '',
+  }, 
+  selectedContact: {
+    uid: '',
+    email: '',
+    photoURL: '',
+    displayName: '',
+  }, 
   selectedContactMessages: []
 };
