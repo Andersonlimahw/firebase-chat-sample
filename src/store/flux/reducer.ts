@@ -17,7 +17,6 @@ function groupContactsById(messages : any) {
   const contacts = groupedData(mappedData);
   return Object.entries(contacts).map(([from, messagesMapped]) => ({
     from, 
-    messagesMapped,
     count: (messagesMapped as any[]).length,
     user: { 
       displayName: (messagesMapped as any[])[0].displayName,
