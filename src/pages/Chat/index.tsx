@@ -19,15 +19,15 @@ import { Footer } from './Components/Footer';
 export const Chat = () => {
   const chatStore = useChat((state: any) => state);
 
-  const { 
-      dispatch, 
-      selectedContact,
-      user, 
-      messages
-    } = chatStore;
+  const {
+    dispatch,
+    selectedContact,
+    user,
+    messages
+  } = chatStore;
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user : any) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: any) => {
       if (user) {
         dispatch({
           type: EActionType.SET_USER,
@@ -53,7 +53,7 @@ export const Chat = () => {
       const updatedMessages = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
-      }));   
+      }));
       callback(updatedMessages);
     });
   };
@@ -63,14 +63,14 @@ export const Chat = () => {
     (async () => {
       const unsubscribe = await subscribeToMessages((updatedMessages: any) => {
         dispatch({
-          type: EActionType.SET_MESSAGES, 
+          type: EActionType.SET_MESSAGES,
           payload: {
             messages: updatedMessages
           }
         });
         dispatch({
-          type: EActionType.LOAD_CONTACTS, 
-          payload: { }
+          type: EActionType.LOAD_CONTACTS,
+          payload: {}
         });
       });
 
@@ -79,45 +79,53 @@ export const Chat = () => {
 
   }, []);
 
-  
+
 
   return (
-    <div>
-      <div className="w-full h-32 bg-zinc-600" ></div>
-      <div className="container mx-auto mt-[-128px]">
-        <div className="py-6 h-screen">
-          <div className="flex shadow-lg rounded h-full">
-            {user ? (
-              <>
-                {/* Left */}
-                
-                <ContactList />
-                <Footer />
+    <>
+      {
+        !user && (
+          <Login />
+        )
+      }
 
-                {/* Right */}
-                <div className="w-2/3 shadow-sm flex flex-col">
-                  <MessageContainer>
-                    <Header />
+      {user && (
+        <>
+          <div className="w-full h-32 bg-gradient-to-r from-green-900 to-green-400" ></div>
+          <div className="container mx-auto mt-[-128px] rounded-sm">
+            <div className="py-6 h-screen">
+              <div className="flex shadow-lg rounded h-full">
 
-                    {
-                      !selectedContact || selectedContact.uid === '' && (<EmptyMessages />)
-                    }
+                <>
+                  {/* Left */}
 
-                    {selectedContact && selectedContact.uid !== '' && messages.map((msg: IMessageProps) => (
-                      <Message key={msg.id} {...msg} position={ msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left } />
-                    ))}
-                  </MessageContainer>
-                  <SendMessageInput />
-                </div>
-                
-              </>
-            ) : (
-              <Login />
-            )}
+                  <ContactList />
+                  <Footer />
+
+                  {/* Right */}
+                  <div className="w-2/3 shadow-sm flex flex-col">
+                    <MessageContainer>
+                      <Header />
+
+                      {
+                        !selectedContact || selectedContact.uid === '' && (<EmptyMessages />)
+                      }
+
+                      {selectedContact && selectedContact.uid !== '' && messages.map((msg: IMessageProps) => (
+                        <Message key={msg.id} {...msg} position={msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left} />
+                      ))}
+                    </MessageContainer>
+                    <SendMessageInput />
+                  </div>
+
+                </>
+
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </>
+      )}
+    </>
   );
 };
 

@@ -41,7 +41,6 @@ export const ContactListItem = (item: IContactItemProps) => {
                 <div className="flex items-bottom justify-between">
                     <p className="text-grey-darkest">
                         {contact.displayName}                       
-                        <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10 ml-4">{count}</span>
                     </p>
                 </div>
 

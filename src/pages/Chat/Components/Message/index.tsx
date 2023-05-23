@@ -27,18 +27,15 @@ export interface IMessageProps {
 
 export const Message = ({ displayName, message, status, position }: IMessageProps) => {
     const positionClass = position === EMessagePosition.Right ? 'justify-items-end' : 'justify-items-start';
-    const bgColor = position === EMessagePosition.Right ? 'bg-green-400' : ' bg-zinc-400';
+    const bgColor = position === EMessagePosition.Right ? 'bg-gradient-to-t from-green-900 to-green-800 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl' : 'bg-gradient-to-t from-zinc-900 to-zinc-800 rounded-br-3xl rounded-tr-3xl rounded-tl-xl';
     return (
-        <div className={`grid shadow-sm pl-4 text-left my-3 max-w-[100vw] ${positionClass}`}>
+        <div className={`grid rounded-sm shadow-sm pl-4 text-left my-3 max-w-[100vw] ${positionClass}`}>
             <div className={`rounded py-2 px-3 bg-zinc-300 ${bgColor}`}>
-                <p className="text-sm text-teal font-semibold text-zinc-950">
+                <p className="text-sm text-teal font-bold text-zinc-100">
                     {displayName}
                 </p>
-                <p className="text-sm mt-1 text-zinc-800">
-                    {message}
-                    {/* <span className="text-right text-xs text-grey-dark mt-1 justify-end right">
-                        {status === EMessageStatus.Sent ? <Check size={16} color="green" /> : ''}
-                    </span> */}
+                <p className="text-sm mt-1 text-zinc-200">
+                    {message}                    
                 </p>
                
             </div>
