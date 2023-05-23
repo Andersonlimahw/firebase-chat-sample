@@ -15,7 +15,6 @@ export interface IState {
   user?: IUser;
   messages: IMessageProps;
   selectedContact?: IUser;
-  selectedContactMessages: IMessageProps[];
   contactList: IContactItemProps[];
 }
 

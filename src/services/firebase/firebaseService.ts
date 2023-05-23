@@ -52,7 +52,8 @@ export const get = async ({ collectionName } : GetInput) => {
     try { 
         let result;
         const response = query(
-            collection(db, collectionName)
+            collection(db, collectionName), 
+            orderBy('created', 'asc')
         );       
         console.log('[Firebase][get] - Success - response: ', result, response);
         return response;

@@ -14,5 +14,4 @@ export const initialState = {
     photoURL: '',
     displayName: '',
   }, 
-  selectedContactMessages: []
 };

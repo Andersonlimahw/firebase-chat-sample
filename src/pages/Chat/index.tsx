@@ -8,7 +8,7 @@ import { onSnapshot } from 'firebase/firestore';
 import { Login } from './Components/Login';
 import { ContactList } from './Components/ContactList';
 import { MessageContainer } from './Components/MessageContainer';
-import { IMessageProps, Message } from './Components/Message';
+import { EMessagePosition, IMessageProps, Message } from './Components/Message';
 import { SendMessageInput } from './Components/SendMessage';
 import { Header } from './Components/Header';
 import { useChat } from '../../store/hooks/use-chat-store';
@@ -20,8 +20,8 @@ export const Chat = () => {
   const { 
       dispatch, 
       selectedContact,
-      selectedContactMessages, 
-      user
+      user, 
+      messages
     } = chatStore;
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const Chat = () => {
       const updatedMessages = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
-      }));     
+      }));   
       callback(updatedMessages);
     });
   };
@@ -102,11 +102,11 @@ export const Chat = () => {
                   <MessageContainer>
                     <Header />
                     {
-                      !selectedContactMessages || selectedContactMessages.length === 0 && (<p className='text-zinc-400'>Selecione um contato para conversar.</p>)
+                      !messages || messages.length === 0 && (<p className='text-zinc-400'>Selecione um contato para conversar.</p>)
                     }
 
-                    {chatStore && selectedContactMessages.map((msg: IMessageProps) => (
-                      <Message key={msg.id} {...msg} />
+                    {chatStore && messages.map((msg: IMessageProps) => (
+                      <Message key={msg.id} {...msg} position={ msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left } />
                     ))}
                   </MessageContainer>
                   <SendMessageInput />

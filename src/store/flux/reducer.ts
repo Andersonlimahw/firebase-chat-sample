@@ -50,16 +50,13 @@ export const reducer = (state: any, { type, payload }: IAction) => {
       return {
         ...initialState,
         ...state,
-        messages: payload.messages.filter((message : any) => message.to === state.user.email),
+        messages: payload.messages,
       };
     case EActionType.SELECT_CONTACT:
       return {
         ...initialState,
         ...state,
         selectedContact: payload.user,
-        selectedContactMessages: state.messages.filter(
-          (message: any) =>
-            message.from === payload.email),
       };
     case EActionType.LOAD_CONTACTS:
       return {
