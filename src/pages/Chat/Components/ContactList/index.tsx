@@ -2,7 +2,6 @@ import { useChat } from "../../../../store/hooks/use-chat-store";
 import { ContactListItem, IContactItemProps } from "./ContactListItem"
 
 export const ContactList = () => {
-    // TODO: connect to constact list provider
     const useChatStore = useChat((state: any) => state);
 
     const { contactList, user } = useChatStore;

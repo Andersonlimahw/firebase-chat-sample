@@ -5,13 +5,13 @@ export const initialState = {
   user: {
     uid: '',
     email: '',
-    photoURL: '',
+    photoURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/694px-Unknown_person.jpg',
     displayName: '',
   }, 
   selectedContact: {
     uid: '',
-    email: '',
-    photoURL: '',
-    displayName: '',
+    email: 'sample@sample.com',
+    photoURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/694px-Unknown_person.jpg',
+    displayName: 'Hi, 😃',
   }, 
 };

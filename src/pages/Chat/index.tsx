@@ -13,6 +13,8 @@ import { SendMessageInput } from './Components/SendMessage';
 import { Header } from './Components/Header';
 import { useChat } from '../../store/hooks/use-chat-store';
 import { EActionType, IAction } from '../../store/flux/actions';
+import { EmptyMessages } from './Components/EmptyMessages';
+import { Footer } from './Components/Footer';
 
 export const Chat = () => {
   const chatStore = useChat((state: any) => state);
@@ -77,14 +79,7 @@ export const Chat = () => {
 
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  
 
   return (
     <div>
@@ -95,17 +90,20 @@ export const Chat = () => {
             {user ? (
               <>
                 {/* Left */}
+                
                 <ContactList />
+                <Footer />
 
                 {/* Right */}
                 <div className="w-2/3 shadow-sm flex flex-col">
                   <MessageContainer>
                     <Header />
+
                     {
-                      !messages || messages.length === 0 && (<p className='text-zinc-400'>Selecione um contato para conversar.</p>)
+                      !selectedContact || selectedContact.uid === '' && (<EmptyMessages />)
                     }
 
-                    {chatStore && messages.map((msg: IMessageProps) => (
+                    {selectedContact && selectedContact.uid !== '' && messages.map((msg: IMessageProps) => (
                       <Message key={msg.id} {...msg} position={ msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left } />
                     ))}
                   </MessageContainer>
