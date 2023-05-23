@@ -19,7 +19,9 @@ export const Login = () => {
                     </div>
                     <form action="#">
                         <div className="mt-4 flex justify-center text-lg text-white font-bold">
-                            <button type="submit" onClick={handleGoogleLogin}> Login with google</button>
+                            <button type="submit" onClick={handleGoogleLogin}> 
+                                Login with google
+                            </button>
                         </div>
                     </form>
                 </div>

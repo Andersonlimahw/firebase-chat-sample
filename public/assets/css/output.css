@@ -855,6 +855,10 @@ video {
   justify-items: center;
 }
 
+.justify-items-stretch {
+  justify-items: stretch;
+}
+
 .overflow-auto {
   overflow: auto;
 }
