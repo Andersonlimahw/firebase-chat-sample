@@ -67,7 +67,7 @@ export const reducer = (state: IState, { type, payload }: IAction) => {
       return {
         ...initialState,
         ...state,
-        contactList: groupContactsById(state.messages, state.user?.email),
+        contactList: groupContactsById(state.messages, state?.user?.email as string),
       };
   }
 };

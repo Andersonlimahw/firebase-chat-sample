@@ -91,14 +91,14 @@ export const Chat = () => {
       <div className="w-full h-32 bg-zinc-600" ></div>
       <div className="container mx-auto mt-[-128px]">
         <div className="py-6 h-screen">
-          <div className="flex border border-zinc-400 rounded shadow-lg h-full">
+          <div className="flex shadow-lg rounded h-full">
             {user ? (
               <>
                 {/* Left */}
                 <ContactList />
 
                 {/* Right */}
-                <div className="w-2/3 border flex flex-col">
+                <div className="w-2/3 shadow-sm flex flex-col">
                   <MessageContainer>
                     <Header />
                     {

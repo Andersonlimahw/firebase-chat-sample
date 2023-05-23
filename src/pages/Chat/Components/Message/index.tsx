@@ -29,7 +29,7 @@ export const Message = ({ displayName, message, status, position }: IMessageProp
     const positionClass = position === EMessagePosition.Right ? 'justify-items-end' : 'justify-items-start';
     const bgColor = position === EMessagePosition.Right ? 'bg-green-400' : ' bg-zinc-400';
     return (
-        <div className={`grid pl-4 text-left my-3 max-w-[100vw] ${positionClass}`}>
+        <div className={`grid shadow-sm pl-4 text-left my-3 max-w-[100vw] ${positionClass}`}>
             <div className={`rounded py-2 px-3 bg-zinc-300 ${bgColor}`}>
                 <p className="text-sm text-teal font-semibold text-zinc-950">
                     {displayName}

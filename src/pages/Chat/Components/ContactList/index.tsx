@@ -8,7 +8,7 @@ export const ContactList = () => {
     const { contactList, user } = useChatStore;
 
     return (
-        <div className="w-1/3 border flex flex-col">
+        <div className="w-1/3 shadow-sm border border-zinc-900 border-r-zinc-900  flex flex-col">
             <div className="py-2 px-3 bg-grey-lighter flex flex-row justify-between items-center">
                 <div>
                     <img className="w-10 h-10 rounded-full" src={user.photoURL} />
