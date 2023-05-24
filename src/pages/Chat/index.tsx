@@ -138,7 +138,7 @@ export const Chat = () => {
                       }
 
                       {hasSelectedContact &&
-                        messages.filter((message: IMessageProps) => message.from === user.email || message.from === selectedContact.email).map((msg: IMessageProps) => (
+                        messages.filter((message: IMessageProps) => (message.from === user.email || message.to === user.email)).map((msg: IMessageProps) => (
                             <Message 
                               key={msg.id} 
                               {...msg} 
