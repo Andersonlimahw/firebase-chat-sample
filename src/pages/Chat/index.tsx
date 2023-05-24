@@ -70,7 +70,9 @@ export const Chat = () => {
         });
         dispatch({
           type: EActionType.LOAD_CONTACTS,
-          payload: {}
+          payload: {
+            messages: updatedMessages
+          }
         });
       });
 
@@ -112,9 +114,7 @@ export const Chat = () => {
                         !hasSelectedContact && (<EmptyMessages />)
                       }
 
-                      {hasSelectedContact &&
-                        messages.filter((message: IMessageProps) => message.from === user.email || message.from === selectedContact.email)
-                        .map((msg: IMessageProps) => (
+                      {hasSelectedContact && messages.map((msg: IMessageProps) => (
                             <Message key={msg.id} {...msg} position={msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left} />
                           ))}
                     </MessageContainer>

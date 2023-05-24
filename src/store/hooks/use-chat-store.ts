@@ -13,7 +13,7 @@ export interface IUser {
 
 export interface IState { 
   user?: IUser;
-  messages: IMessageProps;
+  messages: IMessageProps[];
   selectedContact?: IUser;
   contactList: IContactItemProps[];
 }

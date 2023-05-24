@@ -58,12 +58,13 @@ export const reducer = (state: IState, { type, payload }: IAction) => {
         ...initialState,
         ...state,
         selectedContact: payload.user,
+        messages: state.messages.filter((x : IMessageProps) => x.from === state.user?.email && x.to === payload.user.email)
       };
     case EActionType.LOAD_CONTACTS:
       return {
         ...initialState,
         ...state,
-        contactList: groupContactsById(state.messages, state?.user?.email as string),
+        contactList: groupContactsById(payload.messages, state?.user?.email as string),
       };
   }
 };
