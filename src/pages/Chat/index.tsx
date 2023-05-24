@@ -79,6 +79,7 @@ export const Chat = () => {
 
   }, []);
 
+  const hasSelectedContact = selectedContact && selectedContact.uid !== '';
 
 
   return (
@@ -88,7 +89,7 @@ export const Chat = () => {
           <Login />
         )
       }
-
+      {/* TODO: react-router */}
       {user && (
         <>
           <div className="w-full h-32 bg-gradient-to-r from-green-900 to-green-400" ></div>
@@ -108,12 +109,14 @@ export const Chat = () => {
                       <Header />
 
                       {
-                        !selectedContact || selectedContact.uid === '' && (<EmptyMessages />)
+                        !hasSelectedContact && (<EmptyMessages />)
                       }
 
-                      {selectedContact && selectedContact.uid !== '' && messages.map((msg: IMessageProps) => (
-                        <Message key={msg.id} {...msg} position={msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left} />
-                      ))}
+                      {hasSelectedContact &&
+                        messages.filter((message: IMessageProps) => message.from === user.email || message.from === selectedContact.email)
+                        .map((msg: IMessageProps) => (
+                            <Message key={msg.id} {...msg} position={msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left} />
+                          ))}
                     </MessageContainer>
                     <SendMessageInput />
                   </div>
