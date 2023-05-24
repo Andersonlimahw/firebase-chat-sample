@@ -30,7 +30,7 @@ export const Message = ({ user, message, position }: IMessageProps) => {
         <div className={`grid rounded-sm shadow-sm pl-4 text-left my-3 max-w-[100vw] ${positionClass}`}>
             <div className={`rounded py-2 px-3 bg-zinc-300 ${bgColor}`}>
                 <p className="text-sm text-teal font-bold text-zinc-100">
-                    {user.displayName}
+                    {user?.displayName}
                 </p>
                 <p className="text-sm mt-1 text-zinc-200">
                     {message}                    
