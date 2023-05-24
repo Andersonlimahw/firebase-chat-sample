@@ -57,8 +57,7 @@ export const reducer = (state: IState, { type, payload }: IAction) => {
       return {
         ...initialState,
         ...state,
-        selectedContact: payload.user,
-        messages: state.messages.filter((x : IMessageProps) => x.from === state.user?.email && x.to === payload.user.email)
+        selectedContact: payload.user
       };
     case EActionType.LOAD_CONTACTS:
       return {
