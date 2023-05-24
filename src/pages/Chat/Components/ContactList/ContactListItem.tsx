@@ -18,18 +18,13 @@ export interface IContactItemProps {
 export const ContactListItem = (item: IContactItemProps) => {
     const useChatStore = useChat((state: any) => state);
     const { dispatch } = useChatStore;
-    const { user: contact, count } = item;
 
 
     function handleContactSelection(item: IContactItemProps | any) {
         return dispatch({
             type: EActionType.SELECT_CONTACT,
             payload: {
-                ...item,
-                ...contact,               
-                email: item.from,
-                from: item.from,
-                to: item.to,
+                user: item,
             }
         });
     }
@@ -37,12 +32,12 @@ export const ContactListItem = (item: IContactItemProps) => {
     return (
         <div className="bg-zinc-800 px-3 flex items-center hover:bg-zinc-600 hover:shadow-sm cursor-pointer" onClick={() => handleContactSelection(item)}>
             <div>
-                <img className="h-12 w-12 rounded-full" src={contact.photoURL} />
+                <img className="h-12 w-12 rounded-full" src={item.photoURL} />
             </div>
             <div className="ml-4 flex-1 border-b border-green-lighter py-4 align-baseline justify-start">
                 <div className="flex items-bottom justify-between">
                     <p className="text-grey-darkest">
-                        {contact.displayName}                       
+                        {item.displayName}                       
                     </p>
                 </div>
 

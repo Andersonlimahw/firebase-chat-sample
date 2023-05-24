@@ -13,17 +13,17 @@ export const SendMessageInput = () => {
 
     const sendMessage = async (message: string) => {
         return create({
-            collectionName: 'chat',
+            collectionName: 'chat-messages',
             payload: {
                 user: {                    
-                    email: 'andersonlimahw@gmail.com',
+                    email,
                     displayName,
                     photoURL,
                     uid,
                 },
                 message: message,
                 from: email,
-                to: selectedContact?.email || 'andersonlimadeveloper@gmail.com',                
+                to: selectedContact?.email,                
                 status: EMessageStatus.Sent
             }
         });

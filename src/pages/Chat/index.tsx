@@ -47,13 +47,26 @@ export const Chat = () => {
   }, []);
 
   async function subscribeToMessages(callback: any) {
-    const query = await get({ collectionName: 'chat' }).then(data => data);
+    const query = await get({ collectionName: 'chat-messages' }).then(data => data);
 
     return onSnapshot(query, (snapshot) => {
       const updatedMessages = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
+      callback(updatedMessages);
+    });
+  };
+
+  async function subscribeToContacts(callback: any) {
+    const query = await get({ collectionName: 'chat-contacts' }).then(data => data);
+
+    return onSnapshot(query, (snapshot) => {
+      const updatedMessages = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log('chat-contacts => ', updatedMessages);
       callback(updatedMessages);
     });
   };
@@ -67,11 +80,21 @@ export const Chat = () => {
           payload: {
             messages: updatedMessages
           }
-        });
+        });       
+      });
+
+      return () => unsubscribe();
+    })();
+
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const unsubscribe = await subscribeToContacts((content: any) => {
         dispatch({
           type: EActionType.LOAD_CONTACTS,
           payload: {
-            messages: updatedMessages
+            contactList: content
           }
         });
       });
@@ -115,7 +138,7 @@ export const Chat = () => {
                       }
 
                       {hasSelectedContact &&
-                        messages.filter((x: IMessageProps) => x.from === user.email && x.to === selectedContact.email)
+                        messages.filter((x: IMessageProps) => x.from === user.email || x.to === selectedContact.email)
                           .map((msg: IMessageProps) => (
                             <Message key={msg.id} {...msg} position={msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left} />
                           ))}
