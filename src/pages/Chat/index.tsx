@@ -104,7 +104,7 @@ export const Chat = () => {
                   <Footer />
 
                   {/* Right */}
-                  <div className="w-2/3 shadow-sm flex flex-col">
+                  <div className="min-[300px]:w-full max=[600px]:w-2/3 shadow-sm flex flex-col">
                     <MessageContainer>
                       <Header />
 
