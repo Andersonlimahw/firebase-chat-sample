@@ -138,9 +138,13 @@ export const Chat = () => {
                       }
 
                       {hasSelectedContact &&
-                        messages.filter((x: IMessageProps) => x.from === user.email || x.to === selectedContact.email)
-                          .map((msg: IMessageProps) => (
-                            <Message key={msg.id} {...msg} position={msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left} />
+                        messages.filter((message: IMessageProps) => message.from === user.email || message.from === selectedContact.email).map((msg: IMessageProps) => (
+                            <Message 
+                              key={msg.id} 
+                              {...msg} 
+                              position={msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left} 
+                              userName={msg.from === user.email ? user.displayName : selectedContact.displayName}
+                            />
                           ))}
                     </MessageContainer>
                     <SendMessageInput />

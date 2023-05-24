@@ -1,4 +1,4 @@
-import { IState } from "../hooks/use-chat-store";
+import { IState, IUser } from "../hooks/use-chat-store";
 import { EActionType, IAction } from "./actions";
 import { initialState } from "./initial-state";
 
@@ -27,7 +27,7 @@ export const reducer = (state: IState, { type, payload }: IAction) => {
       return {
         ...initialState,
         ...state,
-        contactList: payload.contactList,
+        contactList: payload.contactList.filter((x : IUser) => x.uid !== state.user?.uid),
       };
   }
 };

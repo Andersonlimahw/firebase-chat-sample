@@ -14,13 +14,8 @@ export const SendMessageInput = () => {
     const sendMessage = async (message: string) => {
         return create({
             collectionName: 'chat-messages',
-            payload: {
-                user: {                    
-                    email,
-                    displayName,
-                    photoURL,
-                    uid,
-                },
+            payload: {                
+                userId: uid,
                 message: message,
                 from: email,
                 to: selectedContact?.email,                
