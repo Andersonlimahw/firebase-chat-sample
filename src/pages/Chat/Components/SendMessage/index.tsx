@@ -15,12 +15,15 @@ export const SendMessageInput = () => {
         return create({
             collectionName: 'chat',
             payload: {
+                user: {                    
+                    email: 'andersonlimahw@gmail.com',
+                    displayName,
+                    photoURL,
+                    uid,
+                },
                 message: message,
-                to: selectedContact?.email || 'andersonlimadeveloper@gmail.com',
                 from: email,
-                displayName,
-                photoURL,
-                uid: uid,
+                to: selectedContact?.email || 'andersonlimadeveloper@gmail.com',                
                 status: EMessageStatus.Sent
             }
         });

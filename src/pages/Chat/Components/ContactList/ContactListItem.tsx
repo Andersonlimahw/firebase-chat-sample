@@ -28,6 +28,8 @@ export const ContactListItem = (item: IContactItemProps) => {
                 ...item,
                 ...contact,               
                 email: item.from,
+                from: item.from,
+                to: item.to,
             }
         });
     }

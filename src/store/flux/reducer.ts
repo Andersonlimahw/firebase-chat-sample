@@ -20,9 +20,9 @@ function groupContactsById(messages: any, userEmail: string) {
     from,
     count: (messagesMapped as any[]).length,
     user: {
-      displayName: (messagesMapped as any[])[0].displayName,
-      photoURL: (messagesMapped as any[])[0].photoURL,
-      uid: (messagesMapped as any[])[0].uid,
+      displayName: (messagesMapped as any[])[0].user.displayName,
+      photoURL: (messagesMapped as any[])[0].user.photoURL,
+      uid: (messagesMapped as any[])[0].user.uid,
       email: from,
     },
   }));
@@ -34,11 +34,7 @@ const mapContactList = (messages: any, userEmail: string) =>
     .map((message: IMessageProps) => ({
       ...message,
       id: message.id,
-      uid: message.uid,
-      photoURL:
-        message.photoURL ||
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/694px-Unknown_person.jpg",
-      displayName: message.displayName,
+      user: message.user,
       time: message.time,
       status: `${message.message.slice(0, 10)}...`,
     }));
