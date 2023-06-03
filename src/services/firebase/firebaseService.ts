@@ -26,7 +26,8 @@ import {
     DeleteResponse,
     CreateInput,
     CreateResponse,
-    GetGroupedInput
+    GetGroupedInput,
+    GetMessagesInput
 } from './interfaces';
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from '@firebase/auth';
 
@@ -48,10 +49,11 @@ export const create = async ({ collectionName, payload } : CreateInput) : Promis
     }
 }
 
-export const get = async ({ collectionName } : GetInput) => {
+export const get = async ({ collectionName, userId } : GetInput) => {
     try { 
         const response = query(
             collection(db, collectionName), 
+            where('userId', '==', userId),
             orderBy('created', 'asc')
         );       
         console.log('[Firebase][get] - Success - url: ', collectionName, ' response: ', response);
@@ -61,6 +63,7 @@ export const get = async ({ collectionName } : GetInput) => {
         throw new Error(`Error to get document: ${ex}`);
     }
 }
+
 
 export const getGroupdByEmail = async ({ collectionName, email } : GetGroupedInput) => {
     try { 
@@ -111,14 +114,15 @@ export const getContactsByUserId = async ({ collectionName, id } : GetByIdInput)
     }
 }
 
-export const getMessagesByUserId = async ({ collectionName, id } : GetByIdInput) => {
+export const getMessagesByContactUserId = async ({ collectionName, userId, contactUid } : GetMessagesInput) => {
     try { 
-        const resolvedCollectionName = `${collectionName}/${id}/messages`;
         const response = query(
-            collection(db, resolvedCollectionName), 
+            collection(db, collectionName), 
+            where('userId', '==', userId),
+            where('contactUid', '==', contactUid),
             orderBy('created', 'asc')
         );               
-        console.log('[Firebase][getMessagesByUserId] - Success - response: ', response , ' resolvedCollectionName: ', resolvedCollectionName);
+        console.log('[Firebase][getMessagesByUserId] - Success - response: ', response , ' resolvedCollectionName: ', collectionName);
         return response;
     } catch(ex) {
         console.error('[Firebase][get] - Error: ', ex);

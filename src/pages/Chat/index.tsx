@@ -20,7 +20,7 @@ export const Chat = () => {
   } = chatStore;
 
 
-  const hasSelectedContact = selectedContact && selectedContact.uid !== '';
+  const hasSelectedContact = selectedContact && selectedContact.id !== '';
 
   return (
     <>

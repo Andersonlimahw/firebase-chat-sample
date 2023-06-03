@@ -22,6 +22,11 @@ export interface DeleteResponse {
 
 export interface GetInput { 
     collectionName: string;
+    userId: string;
+}
+
+export interface GetMessagesInput extends GetInput {
+    contactUid: string;
 }
 
 export interface GetGroupedInput extends GetInput { 
