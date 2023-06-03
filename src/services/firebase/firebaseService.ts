@@ -118,8 +118,8 @@ export const getMessagesByContactUserId = async ({ collectionName, userId, conta
     try { 
         const response = query(
             collection(db, collectionName), 
-            where('userId', '==', userId),
-            where('contactUid', '==', contactUid),
+            where('userId', 'in', [userId, contactUid]),
+            // where('contactUid', '==', contactUid),
             orderBy('created', 'asc')
         );               
         console.log('[Firebase][getMessagesByUserId] - Success - response: ', response , ' resolvedCollectionName: ', collectionName);

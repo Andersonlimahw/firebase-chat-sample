@@ -21,7 +21,7 @@ export const Chat = () => {
 
 
   const hasSelectedContact = selectedContact && selectedContact.id !== '';
-
+  console.log('#User => ', user);
   return (
     <>
       {
