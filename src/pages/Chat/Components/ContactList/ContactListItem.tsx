@@ -1,5 +1,5 @@
 import { EActionType } from "../../../../store/flux";
-import { IUser, useChat } from "../../../../store/hooks/use-chat-store";
+import { useChat } from "../../../../store/hooks/use-chat-store";
 
 export interface IContactItemProps {
     id: string;
@@ -34,7 +34,7 @@ export const ContactListItem = (item: IContactItemProps) => {
             <div>
                 <img className="h-12 w-12 rounded-full" src={item.photoURL} />
             </div>
-            <div className="ml-4 flex-1 border-b border-green-lighter py-4 align-baseline justify-start">
+            <div className="ml-4 my-2 flex-1 shadow-2xl border-green-lighter py-4 align-baseline justify-start">
                 <div className="flex items-bottom justify-between">
                     <p className="text-grey-darkest">
                         {item.displayName}                       
