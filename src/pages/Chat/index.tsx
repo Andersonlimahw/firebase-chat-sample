@@ -22,7 +22,6 @@ export const Chat = () => {
 
 
   const hasSelectedContact = selectedContact && selectedContact.id !== '';
-  console.log('#User => ', user);
 
   const containerClasses = {
     'mobile': 'min-[0px]:block',
@@ -47,7 +46,7 @@ export const Chat = () => {
           <Login />
         )
       }
-      {/* TODO: react-router */}
+
       {user && (
         <>
           <div className="w-full h-40 bg-gradient-to-r from-green-900 to-green-400" >
@@ -68,7 +67,7 @@ export const Chat = () => {
                 }
 
                 {/* Right */}
-                <div className={`shadow-sm flex flex-col ${messagesContainerClasses[screnType]}`}>
+                <div className={`animate-[wiggle_1s_ease-in-out_infinite] shadow-sm flex flex-col ${messagesContainerClasses[screnType]}`}>
                   <MessageContainer>
                     <Header />
 

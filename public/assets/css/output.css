@@ -720,12 +720,40 @@ video {
   width: 100%;
 }
 
+.w-\[9\%\] {
+  width: 9%;
+}
+
+.w-\[92\%\] {
+  width: 92%;
+}
+
 .max-w-\[100vw\] {
   max-width: 100vw;
 }
 
 .flex-1 {
   flex: 1 1 0%;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8,0,1,1);
+  }
+
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0,0,0.2,1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+.animate-\[wiggle_1s_ease-in-out_infinite\] {
+  animation: wiggle 1s ease-in-out infinite;
 }
 
 .cursor-pointer {
