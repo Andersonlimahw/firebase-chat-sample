@@ -4,6 +4,7 @@ export enum EActionType {
   SET_MESSAGES = "SET_MESSAGES",
   LOAD_CONTACTS = "LOAD_CONTACTS",
   SEND_MESSAGE = "SEND_MESSAGE",
+  SET_LOADING = "SET_LOADING",
 }
 
 export interface IAction {

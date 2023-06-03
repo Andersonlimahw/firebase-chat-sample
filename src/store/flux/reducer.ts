@@ -2,7 +2,6 @@ import { IState, IUser } from "../hooks/use-chat-store";
 import { EActionType, IAction } from "./actions";
 import { initialState } from "./initial-state";
 
-
 export const reducer = (state: IState, { type, payload }: IAction) => {
   switch (type) {
     case EActionType.SET_USER:
@@ -28,6 +27,12 @@ export const reducer = (state: IState, { type, payload }: IAction) => {
         ...initialState,
         ...state,
         contactList: payload.contactList,
+      };
+    case EActionType.SET_LOADING:
+      return {
+        ...initialState,
+        ...state,
+        loading: payload.loading,
       };
   }
 };

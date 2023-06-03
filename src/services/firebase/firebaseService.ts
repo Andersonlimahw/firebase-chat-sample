@@ -50,12 +50,11 @@ export const create = async ({ collectionName, payload } : CreateInput) : Promis
 
 export const get = async ({ collectionName } : GetInput) => {
     try { 
-        let result;
         const response = query(
             collection(db, collectionName), 
             orderBy('created', 'asc')
         );       
-        console.log('[Firebase][get] - Success - response: ', result, response);
+        console.log('[Firebase][get] - Success - url: ', collectionName, ' response: ', response);
         return response;
     } catch(ex) {
         console.error('[Firebase][get] - Error: ', ex);
@@ -82,13 +81,14 @@ export const getById = async ({ collectionName, id } : GetByIdInput) : Promise<G
     try { 
         const documentRefById = await doc(db, collectionName, id);
         const response = await getDoc(documentRefById);
-        console.log('[Firebase][get] - Success - response: ', response);
+        console.log('[Firebase][getById] - Success - response: ', response, ' collectionName: ', collectionName);
         return {
+            ...response,
             id: response.id,
             data: response.data()
         };
     } catch(ex) {
-        console.error('[Firebase][get] - Error: ', ex);
+        console.error('[Firebase][getById] - Error: ', ex);
         throw new Error(`Error to getById document: ${ex}`);
     }
 }

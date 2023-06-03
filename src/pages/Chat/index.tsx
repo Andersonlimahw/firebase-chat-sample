@@ -15,7 +15,8 @@ import { useChat } from '../../store/hooks/use-chat-store';
 import { EActionType, IAction } from '../../store/flux/actions';
 import { EmptyMessages } from './Components/EmptyMessages';
 import { Footer } from './Components/Footer';
-import { COLLECTION_NAME } from './constants';
+import { COLLECTION_NAME, CONTACTS_COLLECTION_NAME, CONTACTS_MESSAGE_COLLECTION_NAME } from './constants';
+import { getById } from '../../services/firebase/firebaseService';
 
 export const Chat = () => {
   const chatStore = useChat((state: any) => state);
@@ -26,7 +27,8 @@ export const Chat = () => {
     selectedContact,
     contactList,
     user,
-    messages
+    messages,
+    loading
   } = chatStore;
 
   useEffect(() => {
@@ -49,27 +51,31 @@ export const Chat = () => {
     return () => unsubscribe();
   }, []);
 
-  async function subscribeToMessages(callback: any){
+  async function subscribeToMessages(callback: any) {
     const contactId = selectedContact && selectedContact.id !== '' ? selectedContact.id : undefined;
-    if(!contactId) {
-      return () => {};
+    const userId = user && user.id !== '' ? selectedContact.id : undefined;
+    if (!contactId || !userId) {
+      return () => { };
     }
 
-    const query = await getMessagesByUserId({ collectionName: COLLECTION_NAME, id: contactId }).then(data => data);    
+    const query = await get({ collectionName: CONTACTS_MESSAGE_COLLECTION_NAME.replace(':uid', userId).replace(':contactId', contactId) }).then(data => data);
     return onSnapshot(query, (snapshot) => {
       const updatedMessages = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      console.log(`GET: ${COLLECTION_NAME} : subscribeToMessages: getMessagesByUserId => `, updatedMessages);
+      console.log(`GET: ${CONTACTS_MESSAGE_COLLECTION_NAME} : subscribeToMessages: getMessagesByUserId => `, updatedMessages);
       callback(updatedMessages);
     });
   };
 
 
   async function subscribeToContacts(callback: any) {
-    const query = await get({ collectionName: COLLECTION_NAME }).then(data => data);
-
+    const userId = user ? user.uid : undefined;
+    if (!userId) {
+      return () => { };
+    }
+    const query = await get({ collectionName: CONTACTS_COLLECTION_NAME.replace(':uid', userId) }).then(data => data);
     return onSnapshot(query, (snapshot) => {
       const updatedContacts = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -77,6 +83,25 @@ export const Chat = () => {
       }));
       console.log(`GET: ${COLLECTION_NAME} => : subscribeToContacts `, updatedContacts);
       callback(updatedContacts);
+    });
+  };
+
+  const queryContacstByUserId = async (userId: string) => await getById({ collectionName: CONTACTS_COLLECTION_NAME.replace(':uid', userId), id: userId }).then(data => data);
+  const queryMessagesByContactId = async (userId: string, contactId: string) => await get({ collectionName: CONTACTS_COLLECTION_NAME.replace(':uid', userId) }).then(data => data);
+
+  async function subscribeToChat(callback: any) {
+    const query = await get({ collectionName: COLLECTION_NAME }).then(data => data);
+    return onSnapshot(query, (snapshot) => {
+      const updatedUsers = snapshot.docs.map(async (doc) => {
+        // const contacts = await queryContacstByUserId(doc.id);
+        // console.log(`GET: ${COLLECTION_NAME} => : subscribeToChat : contacts`, contacts);
+        return {
+          id: doc.id,
+          ...doc.data(), 
+        }
+      });
+      console.log(`GET: ${COLLECTION_NAME} => : subscribeToChat `, updatedUsers);
+      callback(updatedUsers);
     });
   };
 
@@ -95,7 +120,7 @@ export const Chat = () => {
       return () => unsubscribe();
     })();
 
-  }, [contactList]);
+  }, [loading, user, selectedContact, contactList]);
 
   useEffect(() => {
     (async () => {
@@ -111,9 +136,36 @@ export const Chat = () => {
       return () => unsubscribe();
     })();
 
+  }, [user, loading]);
+
+  useEffect(() => {
+    if (dispatch) {
+      dispatch({
+        type: EActionType.SET_LOADING,
+        payload: {
+          loading: true,
+        }
+      });
+    }
+
+    (async () => {
+      const unsubscribe = await subscribeToChat((content: any) => {
+        dispatch({
+          type: EActionType.SET_LOADING,
+          payload: {
+            loading: false,
+            content
+          }
+        });
+      });
+
+      return () => unsubscribe();
+    })();
+
   }, []);
 
   const hasSelectedContact = selectedContact && selectedContact.uid !== '';
+  console.log('User => ', user);
 
 
   return (
