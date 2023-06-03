@@ -1,6 +1,7 @@
 import { IMessageProps } from '../../pages/Chat/Components/Message/index';
 
 export const initialState = {
+  documentRefId: '',
   messages: [],
   contactList: [],
   user: {

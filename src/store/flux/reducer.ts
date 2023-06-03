@@ -10,6 +10,13 @@ export const reducer = (state: IState, { type, payload }: IAction) => {
         ...state,
         user: payload.user,
       };
+    case EActionType.SET_DB_DOCUMENT_REF_ID:
+      return {
+        ...initialState,
+        ...state,
+        documentRefId: payload.documentRefId
+      };
+
     case EActionType.SET_MESSAGES:
       return {
         ...initialState,

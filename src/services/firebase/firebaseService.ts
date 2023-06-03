@@ -58,7 +58,7 @@ export const get = async ({ collectionName } : GetInput) => {
         return response;
     } catch(ex) {
         console.error('[Firebase][get] - Error: ', ex);
-        throw new Error(`Error to create document: ${ex}`);
+        throw new Error(`Error to get document: ${ex}`);
     }
 }
 
@@ -79,6 +79,9 @@ export const getGroupdByEmail = async ({ collectionName, email } : GetGroupedInp
 
 export const getById = async ({ collectionName, id } : GetByIdInput) : Promise<GetByIdResponse> => {
     try { 
+        if(!id) {
+            throw new Error(`Error to getById id: ${id}`);
+        }
         const documentRefById = await doc(db, collectionName, id);
         const response = await getDoc(documentRefById);
         console.log('[Firebase][getById] - Success - response: ', response, ' collectionName: ', collectionName);
@@ -88,7 +91,22 @@ export const getById = async ({ collectionName, id } : GetByIdInput) : Promise<G
             data: response.data()
         };
     } catch(ex) {
-        console.error('[Firebase][getById] - Error: ', ex);
+        console.error('[Firebase][getById] - Error: ', ex, 'Input: ', collectionName, id);
+        throw new Error(`Error to getById document: ${ex}`);
+    }
+}
+
+export const getContactsByUserId = async ({ collectionName, id } : GetByIdInput) => {
+    try { 
+        const resolvedCollectionName = `${collectionName}/${id}/contacts`;
+        const response = query(
+            collection(db, resolvedCollectionName), 
+            orderBy('created', 'asc')
+        );               
+        console.log('[Firebase][getMessagesByUserId] - Success - response: ', response , ' resolvedCollectionName: ', resolvedCollectionName);
+        return response;
+    } catch(ex) {
+        console.error('[Firebase][get] - Error: ', ex);
         throw new Error(`Error to getById document: ${ex}`);
     }
 }
