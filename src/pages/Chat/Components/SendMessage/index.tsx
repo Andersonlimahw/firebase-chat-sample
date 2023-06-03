@@ -3,6 +3,7 @@ import { PaperPlaneRight } from "@phosphor-icons/react";
 import { create } from "../../../../services/firebase";
 import { IState, useChat, IUser } from '../../../../store/hooks/use-chat-store';
 import { EMessageStatus } from "../Message";
+import { COLLECTION_NAME } from "../../constants";
 
 
 export const SendMessageInput = () => {
@@ -12,15 +13,18 @@ export const SendMessageInput = () => {
     const { uid, email, displayName, photoURL } = user as IUser;
 
     const sendMessage = async (message: string) => {
+        const messagePayload = {                
+            userId: uid,
+            contactUid: selectedContact?.uid || '',
+            message: message,
+            from: email,
+            to: selectedContact?.email,                
+            status: EMessageStatus.Sent
+        };
+
         return create({
-            collectionName: 'chat-messages',
-            payload: {                
-                userId: uid,
-                message: message,
-                from: email,
-                to: selectedContact?.email,                
-                status: EMessageStatus.Sent
-            }
+            collectionName: `${COLLECTION_NAME}/${selectedContact?.id}/messages`,
+            payload: messagePayload
         });
     };
 

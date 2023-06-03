@@ -21,13 +21,13 @@ export const reducer = (state: IState, { type, payload }: IAction) => {
       return {
         ...initialState,
         ...state,
-        selectedContact: payload.user
+        selectedContact: payload,
       };
     case EActionType.LOAD_CONTACTS:
       return {
         ...initialState,
         ...state,
-        contactList: payload.contactList.filter((x : IUser) => x.uid !== state.user?.uid),
+        contactList: payload.contactList,
       };
   }
 };

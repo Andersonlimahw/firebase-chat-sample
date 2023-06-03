@@ -93,6 +93,21 @@ export const getById = async ({ collectionName, id } : GetByIdInput) : Promise<G
     }
 }
 
+export const getMessagesByUserId = async ({ collectionName, id } : GetByIdInput) => {
+    try { 
+        const resolvedCollectionName = `${collectionName}/${id}/messages`;
+        const response = query(
+            collection(db, resolvedCollectionName), 
+            orderBy('created', 'asc')
+        );               
+        console.log('[Firebase][getMessagesByUserId] - Success - response: ', response , ' resolvedCollectionName: ', resolvedCollectionName);
+        return response;
+    } catch(ex) {
+        console.error('[Firebase][get] - Error: ', ex);
+        throw new Error(`Error to getById document: ${ex}`);
+    }
+}
+
 export const update = async ({ collectionName, id, payload } : UpdateInput) : Promise<UpdateResponse> => {
     try { 
         const documentRefById = await doc(db, collectionName, id);

@@ -12,7 +12,6 @@ export interface IContactItemProps {
     to: string;
     from: string;
     count: number;
-    user: IUser;
 }
 
 export const ContactListItem = (item: IContactItemProps) => {
@@ -24,7 +23,8 @@ export const ContactListItem = (item: IContactItemProps) => {
         return dispatch({
             type: EActionType.SELECT_CONTACT,
             payload: {
-                user: item,
+                ...item,
+                id: item.id,
             }
         });
     }

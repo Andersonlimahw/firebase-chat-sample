@@ -5,6 +5,7 @@ import { IMessageProps } from "../../pages/Chat/Components/Message";
 import { IContactItemProps } from "../../pages/Chat/Components/ContactList/ContactListItem";
 
 export interface IUser { 
+  id: string;
   uid: string;
   photoURL: string;
   email: string;

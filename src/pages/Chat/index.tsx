@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 
-import { onAuthStateChanged, signOut } from '@firebase/auth';
-import { auth, create, get, getGroupdByEmail } from '../../services/firebase';
+import { onAuthStateChanged } from '@firebase/auth';
+import { auth, get, getMessagesByUserId } from '../../services/firebase';
 
 import { onSnapshot } from 'firebase/firestore';
 import { Login } from './Components/Login';
@@ -15,13 +15,16 @@ import { useChat } from '../../store/hooks/use-chat-store';
 import { EActionType, IAction } from '../../store/flux/actions';
 import { EmptyMessages } from './Components/EmptyMessages';
 import { Footer } from './Components/Footer';
+import { COLLECTION_NAME } from './constants';
 
 export const Chat = () => {
   const chatStore = useChat((state: any) => state);
 
+
   const {
     dispatch,
     selectedContact,
+    contactList,
     user,
     messages
   } = chatStore;
@@ -46,28 +49,34 @@ export const Chat = () => {
     return () => unsubscribe();
   }, []);
 
-  async function subscribeToMessages(callback: any) {
-    const query = await get({ collectionName: 'chat-messages' }).then(data => data);
+  async function subscribeToMessages(callback: any){
+    const contactId = selectedContact && selectedContact.id !== '' ? selectedContact.id : undefined;
+    if(!contactId) {
+      return () => {};
+    }
 
+    const query = await getMessagesByUserId({ collectionName: COLLECTION_NAME, id: contactId }).then(data => data);    
     return onSnapshot(query, (snapshot) => {
       const updatedMessages = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
+      console.log(`GET: ${COLLECTION_NAME} : subscribeToMessages: getMessagesByUserId => `, updatedMessages);
       callback(updatedMessages);
     });
   };
 
+
   async function subscribeToContacts(callback: any) {
-    const query = await get({ collectionName: 'chat-contacts' }).then(data => data);
+    const query = await get({ collectionName: COLLECTION_NAME }).then(data => data);
 
     return onSnapshot(query, (snapshot) => {
-      const updatedMessages = snapshot.docs.map((doc) => ({
+      const updatedContacts = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data(),
+        ...doc.data()
       }));
-      console.log('chat-contacts => ', updatedMessages);
-      callback(updatedMessages);
+      console.log(`GET: ${COLLECTION_NAME} => : subscribeToContacts `, updatedContacts);
+      callback(updatedContacts);
     });
   };
 
@@ -80,13 +89,13 @@ export const Chat = () => {
           payload: {
             messages: updatedMessages
           }
-        });       
+        });
       });
 
       return () => unsubscribe();
     })();
 
-  }, []);
+  }, [contactList]);
 
   useEffect(() => {
     (async () => {
@@ -138,14 +147,14 @@ export const Chat = () => {
                       }
 
                       {hasSelectedContact &&
-                        messages.filter((message: IMessageProps) => (message.from === user.email || message.to === user.email)).map((msg: IMessageProps) => (
-                            <Message 
-                              key={msg.id} 
-                              {...msg} 
-                              position={msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left} 
-                              userName={msg.from === user.email ? user.displayName : selectedContact.displayName}
-                            />
-                          ))}
+                        messages.map((msg: IMessageProps) => (
+                          <Message
+                            key={msg.id}
+                            {...msg}
+                            position={msg.from === user.email ? EMessagePosition.Right : EMessagePosition.Left}
+                            userName={msg.from === user.email ? user.displayName : selectedContact.displayName}
+                          />
+                        ))}
                     </MessageContainer>
                     <SendMessageInput />
                   </div>
