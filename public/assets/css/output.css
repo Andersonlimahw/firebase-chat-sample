@@ -589,6 +589,11 @@ video {
   margin-bottom: 1.5rem;
 }
 
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .mb-2 {
   margin-bottom: 0.5rem;
 }
@@ -617,6 +622,10 @@ video {
   margin-top: -128px;
 }
 
+.block {
+  display: block;
+}
+
 .inline-block {
   display: inline-block;
 }
@@ -627,6 +636,10 @@ video {
 
 .grid {
   display: grid;
+}
+
+.hidden {
+  display: none;
 }
 
 .h-10 {
@@ -647,6 +660,30 @@ video {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-64 {
+  height: 16rem;
+}
+
+.h-48 {
+  height: 12rem;
+}
+
+.h-40 {
+  height: 10rem;
+}
+
+.min-h-\[100v\] {
+  min-height: 100v;
+}
+
+.min-h-\[100vh\] {
+  min-height: 100vh;
+}
+
+.min-h-\[920px\] {
+  min-height: 920px;
 }
 
 .w-1\/3 {
@@ -999,10 +1036,6 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.filter {
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
 .backdrop-blur-md {
   --tw-backdrop-blur: blur(12px);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
@@ -1065,9 +1098,77 @@ body {
   }
 }
 
+@media (min-width: 0px) {
+  .min-\[0px\]\:block {
+    display: block;
+  }
+
+  .min-\[0px\]\:h-12 {
+    height: 3rem;
+  }
+
+  .min-\[0px\]\:h-screen {
+    height: 100vh;
+  }
+
+  .min-\[0px\]\:max-h-12 {
+    max-height: 3rem;
+  }
+
+  .min-\[0px\]\:min-h-\[100vh\] {
+    min-height: 100vh;
+  }
+}
+
+@media (min-width: 200px) {
+  .min-\[200px\]\:block {
+    display: block;
+  }
+}
+
 @media (min-width: 300px) {
+  .min-\[300px\]\:block {
+    display: block;
+  }
+
   .min-\[300px\]\:w-full {
     width: 100%;
+  }
+}
+
+@media (min-width: 640px) {
+  .sm\:block {
+    display: block;
+  }
+
+  @media not all and (min-width: 640px) {
+    .sm\:max-sm\:block {
+      display: block;
+    }
+
+    .sm\:max-sm\:w-full {
+      width: 100%;
+    }
+
+    .sm\:max-sm\:flex-row {
+      flex-direction: row;
+    }
+  }
+}
+
+@media (min-width: 650px) {
+  .min-\[650px\]\:block {
+    display: block;
+  }
+}
+
+@media (min-width: 690px) {
+  .min-\[690px\]\:block {
+    display: block;
+  }
+
+  .min-\[690px\]\:flex {
+    display: flex;
   }
 }
 

@@ -14,9 +14,14 @@ export const reducer = (state: IState, { type, payload }: IAction) => {
       return {
         ...initialState,
         ...state,
-        documentRefId: payload.documentRefId
+        documentRefId: payload.documentRefId,
       };
-
+    case EActionType.RESET_SELECT_CONTACT:
+      return {
+        ...initialState,
+        ...state,
+        selectedContact: initialState.selectedContact,
+      };
     case EActionType.SET_MESSAGES:
       return {
         ...initialState,

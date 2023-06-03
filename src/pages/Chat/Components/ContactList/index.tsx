@@ -7,7 +7,7 @@ export const ContactList = () => {
     const { contactList, user } = useChatStore;
 
     return (
-        <div className="w-1/3 shadow-2xl flex flex-col">
+        <div className="w-full sm:max-sm:w-full shadow-2xl flex flex-col sm:max-sm:flex-row">
             <div className="py-2 px-3 bg-grey-lighter flex flex-row justify-between items-center">
                 <div>
                     <img className="w-10 h-10 rounded-full" src={user.photoURL} />
@@ -15,21 +15,12 @@ export const ContactList = () => {
                 </div>
             </div>
 
-            {/* <!-- Search --> */}
-            {/* <div className="py-2 px-2 bg-grey-lightest">
-                <input
-                    type="text" className="w-full px-2 py-2 text-sm"
-                    placeholder="Search or start new chat"
-                />
-            </div> */}
-
             <div className="bg-grey-lighter flex-1 overflow-auto my-6">
                 {
                     contactList && contactList.map((contact : IContactItemProps, index: number) =>  (
                         <ContactListItem 
                             key={`${contact.id}__${index}`} 
                             {...contact}
-                            user={contact.user} 
                         />
                     ))
                 }

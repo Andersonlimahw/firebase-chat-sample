@@ -18,6 +18,12 @@ export const useFirebaseChat = () => {
     loading
   } = chatStore;
 
+  function handleResetSelectedContact() {
+    dispatch({
+      type: EActionType.RESET_SELECT_CONTACT
+    });
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user: any) => {
       if (user) {
@@ -168,6 +174,7 @@ export const useFirebaseChat = () => {
     contactList,
     user,
     messages,
-    loading
+    loading, 
+    handleResetSelectedContact
   }
 }
