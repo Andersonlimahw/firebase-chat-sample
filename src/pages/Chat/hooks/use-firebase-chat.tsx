@@ -35,7 +35,7 @@ export const useFirebaseChat = () => {
         dispatch({
           type: EActionType.SET_USER,
           payload: {
-            user: null
+            user: undefined
           }
         })
       }
@@ -116,7 +116,7 @@ export const useFirebaseChat = () => {
       return () => unsubscribe();
     })();
 
-  }, [user, user.uid, selectedContact, selectedContact.id]);
+  }, [user, user?.uid, selectedContact, selectedContact?.id]);
 
   useEffect(() => {
     (async () => {
@@ -132,7 +132,7 @@ export const useFirebaseChat = () => {
       return () => unsubscribe();
     })();
 
-  }, [user, user.uid, user.id, user.email, dispatch, loading]);
+  }, [user, user?.uid, user?.id, user?.email, dispatch, loading]);
 
   useEffect(() => {
     if(!user || !user.uid) return () => { };
@@ -167,7 +167,7 @@ export const useFirebaseChat = () => {
       return () => unsubscribe();
     })();
 
-  }, [user, user.uid, user.id, user.email, dispatch]);
+  }, [user, user?.uid, user?.id, user?.email, dispatch]);
 
   return {
     selectedContact,
