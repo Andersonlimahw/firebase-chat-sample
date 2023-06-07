@@ -40,6 +40,7 @@ export const Chat = () => {
 
   return (
     <>
+     
       <div className="w-full h-40 bg-gradient-to-r from-green-900 to-green-400" >
         <ArrowLineLeft onClick={handleResetSelectedContact} size={48} className={`mx-2 py-2 cursor-pointer ${hasSelectedContact ? 'block' : 'hidden'}`} />
       </div>

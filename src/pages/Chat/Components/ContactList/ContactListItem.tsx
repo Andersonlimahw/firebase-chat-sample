@@ -35,15 +35,14 @@ export const ContactListItem = (item: IContactItemProps) => {
     return (
         <div className="bg-zinc-800 px-3 flex items-center hover:bg-zinc-600 hover:shadow-sm cursor-pointer" onClick={() => handleContactSelection(item)}>
             <div>
-                <img className="h-12 w-12 rounded-full" src={item.photoURL} />
+                <img className="h-12 w-12 rounded-full" src={item?.photoURL} />
             </div>
             <div className="ml-4 my-2 flex-1 shadow-2xl border-green-lighter py-4 align-baseline justify-start">
                 <div className="flex items-bottom justify-between">
                     <p className="text-grey-darkest">
-                        {item.displayName}                       
+                        {item?.displayName}                       
                     </p>
                 </div>
-
             </div>
         </div>
     )

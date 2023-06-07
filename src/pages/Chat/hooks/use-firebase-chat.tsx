@@ -49,7 +49,7 @@ export const useFirebaseChat = () => {
             user: undefined
           }
         })
-        // handleLogout();
+        handleLogout();
       }
     });
 
