@@ -30,7 +30,6 @@ export const ContactListItem = (item: IContactItemProps) => {
             }
         });
         navigate(`/chat/${item.id}`)
-
     }
 
     return (

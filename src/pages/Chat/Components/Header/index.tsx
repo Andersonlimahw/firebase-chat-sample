@@ -1,9 +1,11 @@
+import { ArrowLineLeft } from "@phosphor-icons/react";
 import { IUser, useChat } from "../../../../store/hooks/use-chat-store";
 
 
 export const Header = () => {
     const selectedContact = useChat((state: any) => state.selectedContact) as IUser;
-    return (
+
+    return (<>
         <div className="py-2 px-3 bg-grey-lighter flex flex-row justify-start items-start">
             <div className="flex items-start">
                 <div>
@@ -19,5 +21,7 @@ export const Header = () => {
                 </div>
             </div>
         </div>
+    </>
+
     )
 }

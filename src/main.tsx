@@ -18,12 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/chat",
     element: <Chat />,
-    children: [
-      {
-        path: "/chat/:contactId",
-        element: <ChatDetail />,
-      },
-    ],
+  },
+  {
+    path: "/chat/:id",
+    element: <ChatDetail />,
   },
 ]);
 

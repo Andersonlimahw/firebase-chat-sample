@@ -1,3 +1,4 @@
+import { ArrowLineLeft } from "@phosphor-icons/react";
 import { useFirebaseChat } from "../../hooks";
 import { Header } from "../Header"
 import { EMessagePosition, IMessageProps, Message } from "../Message";
@@ -9,6 +10,7 @@ export const ChatDetail = () => {
 
     const {
         selectedContact,
+        handleResetSelectedContact,
         user,
         messages,
     } = chatStore;
@@ -28,12 +30,15 @@ export const ChatDetail = () => {
     const screnType = isMobile() ? 'mobile' : 'default';
     return (
 
-        < div className={`animate-[wiggle_1s_ease-in-out_infinite] shadow-sm flex flex-col ${messagesContainerClasses[screnType]}`
+        <div className={`animate-[wiggle_1s_ease-in-out_infinite] shadow-sm flex flex-col ${messagesContainerClasses[screnType]}`
         }>
             <MessageContainer>
+                <div className="w-full" >
+                    <ArrowLineLeft onClick={handleResetSelectedContact} size={40} className={`text-white mx-2 py-2 cursor-pointer ${hasSelectedContact ? 'block' : 'hidden'}`} />
+                </div>
                 <Header />
 
-                {hasSelectedContact &&
+                {messages &&
                     messages.map((msg: IMessageProps) => (
                         <Message
                             key={msg.id}
