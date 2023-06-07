@@ -1,4 +1,6 @@
 import { onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
 import { useEffect } from "react";
 import { auth, get, getMessagesByContactUserId } from "../../../services/firebase";
 import { useChat } from "../../../store/hooks/use-chat-store";
@@ -6,8 +8,11 @@ import { EActionType } from "../../../store/flux";
 import { CONTACTS_COLLECTION_NAME, MESSAGE_COLLECTION_NAME, USERS_COLLECTION_NAME } from "../constants";
 import { onSnapshot } from "firebase/firestore";
 
+
 export const useFirebaseChat = () => {
   const chatStore = useChat((state: any) => state);
+  const navigate = useNavigate();
+
 
   const {
     dispatch,
@@ -22,6 +27,11 @@ export const useFirebaseChat = () => {
     dispatch({
       type: EActionType.RESET_SELECT_CONTACT
     });
+    navigate('/chat');
+  }
+
+  function handleLogout() {
+    navigate('/');
   }
 
   useEffect(() => {
@@ -32,12 +42,14 @@ export const useFirebaseChat = () => {
           payload: { user: user }
         })
       } else {
+        
         dispatch({
           type: EActionType.SET_USER,
           payload: {
             user: undefined
           }
         })
+        // handleLogout();
       }
     });
 
@@ -51,9 +63,9 @@ export const useFirebaseChat = () => {
       return () => { };
     }
 
-    const query = await getMessagesByContactUserId({ 
+    const query = await getMessagesByContactUserId({
       collectionName: MESSAGE_COLLECTION_NAME,
-      userId, 
+      userId,
       contactUid: contactId,
     }).then(data => data);
     return onSnapshot(query, (snapshot) => {
@@ -72,8 +84,8 @@ export const useFirebaseChat = () => {
     if (!userId) {
       return () => { };
     }
-    const query = await get({ 
-      collectionName: CONTACTS_COLLECTION_NAME, 
+    const query = await get({
+      collectionName: CONTACTS_COLLECTION_NAME,
       userId
     }).then(data => data);
     return onSnapshot(query, (snapshot) => {
@@ -87,10 +99,10 @@ export const useFirebaseChat = () => {
   };
 
 
-  async function subscribeToChat(callback: any) {   
+  async function subscribeToChat(callback: any) {
     const query = await get({ collectionName: USERS_COLLECTION_NAME, userId: user.uid }).then(data => data);
-    return onSnapshot(query, (snapshot) => {      
-      const selectedUserData = snapshot.docs.map((userDocItem) => ({        
+    return onSnapshot(query, (snapshot) => {
+      const selectedUserData = snapshot.docs.map((userDocItem) => ({
         ...userDocItem,
         ...userDocItem.data(),
         ref: userDocItem.ref,
@@ -135,7 +147,7 @@ export const useFirebaseChat = () => {
   }, [user, user?.uid, user?.id, user?.email, dispatch, loading]);
 
   useEffect(() => {
-    if(!user || !user.uid) return () => { };
+    if (!user || !user.uid) return () => { };
     if (dispatch) {
       dispatch({
         type: EActionType.SET_LOADING,
@@ -150,7 +162,7 @@ export const useFirebaseChat = () => {
         dispatch({
           type: EActionType.SET_LOADING,
           payload: {
-            loading: false, 
+            loading: false,
             content
           }
         });
@@ -174,7 +186,7 @@ export const useFirebaseChat = () => {
     contactList,
     user,
     messages,
-    loading, 
+    loading,
     handleResetSelectedContact
   }
 }

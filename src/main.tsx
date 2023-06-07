@@ -1,10 +1,34 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.js'
 import './index.css'
+
+import * as ReactDOM from "react-dom/client";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import { Login } from './pages/Login/index.js';
+import { Chat } from './pages/Chat';
+import { ChatDetail } from './pages/Chat/Components/ChatDetail';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Login />,
+  },
+  {
+    path: "/chat",
+    element: <Chat />,
+    children: [
+      {
+        path: "/chat/:contactId",
+        element: <ChatDetail />,
+      },
+    ],
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>,
 )

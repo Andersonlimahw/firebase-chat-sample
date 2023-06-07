@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { EActionType } from "../../../../store/flux";
 import { useChat } from "../../../../store/hooks/use-chat-store";
 
@@ -16,17 +17,20 @@ export interface IContactItemProps {
 
 export const ContactListItem = (item: IContactItemProps) => {
     const useChatStore = useChat((state: any) => state);
+    const navigate = useNavigate();
     const { dispatch } = useChatStore;
 
 
     function handleContactSelection(item: IContactItemProps | any) {
-        return dispatch({
+        dispatch({
             type: EActionType.SELECT_CONTACT,
             payload: {
                 ...item,
                 id: item.id,
             }
         });
+        navigate(`/chat/${item.id}`)
+
     }
 
     return (
