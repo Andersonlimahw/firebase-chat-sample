@@ -5,3 +5,8 @@
 ## Theme Switcher
 - Dark 
 - Light
+- Indigo
+- Purple
+- Others
+## React-router
+## Open.ia / chat gpt integration
