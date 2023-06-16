@@ -2,11 +2,12 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 import { useEffect } from "react";
-import { auth, get, getMessagesByContactUserId } from "../../../services/firebase";
-import { useChat } from "../../../store/hooks/use-chat-store";
+import { auth, create, get, getMessagesByContactUserId } from "../../../services/firebase";
+import { IUser, useChat } from "../../../store/hooks/use-chat-store";
 import { EActionType } from "../../../store/flux";
 import { CONTACTS_COLLECTION_NAME, MESSAGE_COLLECTION_NAME, USERS_COLLECTION_NAME } from "../constants";
 import { onSnapshot } from "firebase/firestore";
+import { IContactItemProps } from '../Components/ContactList/ContactListItem';
 
 
 export const useFirebaseChat = () => {
@@ -42,7 +43,7 @@ export const useFirebaseChat = () => {
           payload: { user: user }
         })
       } else {
-        
+
         dispatch({
           type: EActionType.SET_USER,
           payload: {
@@ -55,6 +56,72 @@ export const useFirebaseChat = () => {
 
     return () => unsubscribe();
   }, []);
+
+  function userIsValid() {
+    return (
+      user &&
+      user.uid &&
+      user.uid != "" &&
+      user.uid != "DEFAULT" &&
+      user.displayName != "" &&
+      user.email != ""
+    )
+  }
+  async function registerUserHasContact() {
+    const hasContact = () => contactList && contactList.find((x: IContactItemProps) => x.email === user.email && x.id == user.uid);
+    if (await hasContact()) {
+      console.log('[registerUserHasContact] - Usúario já cadastrado, user: ', user, ' hasContact: ', hasContact());
+      return;
+    }
+    setTimeout(async () => {
+      const request = await create({
+        collectionName: CONTACTS_COLLECTION_NAME,
+        payload: {
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          id: user.uid,
+          userId: user.uid,
+        }
+      }).then(() => {
+        console.log('[registerUserHasContact] - Usúario cadastrado, user: ', user, ' hasContact: ', hasContact());
+      });
+      return request;
+    }, 3000)
+  
+  }
+
+  async function registerChatGptHasContact() {
+
+    // 1 - Verificar se contato está na lista
+    const chatGptUserId = '';
+    const hasContact = () => userIsValid() && contactList && contactList.find((x: IContactItemProps) => x.id === chatGptUserId);
+    if (!hasContact()) {
+      // console.log('Usúario ainda não cadastrado, user: ', user, ' hasContact: ', hasContact);
+      // const request = await create({
+      //   collectionName: CONTACTS_COLLECTION_NAME,
+      //   payload: {
+      //     email: user.email,
+      //     displayName:  user.displayName,
+      //     photoURL: user.photoURL,
+      //     id: user.uid,
+      //     userId: user.uid,
+      //   }
+      // });
+      // return request;
+    }
+    console.log('Usúario  cadastrado, user: ', user, ' hasContact: ', hasContact);
+
+  }
+
+  useEffect(() => {
+    (async () => {
+      if(userIsValid()) {
+        await registerUserHasContact();
+      }
+      // await registerChatGptHasContact();
+    })();
+  }, [user.uid])
 
   async function subscribeToMessages(callback: any) {
     const contactId = selectedContact && selectedContact.id !== '' ? selectedContact.id : undefined;

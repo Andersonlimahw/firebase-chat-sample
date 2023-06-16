@@ -10,3 +10,5 @@
 - Others
 ## React-router
 ## Open.ia / chat gpt integration
+### Add first contact :  Chatpgpt 
+### Add first contact :  Self
