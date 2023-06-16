@@ -68,12 +68,12 @@ export const useFirebaseChat = () => {
     )
   }
   async function registerUserHasContact() {
-    const hasContact = () => contactList && contactList.find((x: IContactItemProps) => x.email === user.email && x.id == user.uid);
-    if (await hasContact()) {
-      console.log('[registerUserHasContact] - Usúario já cadastrado, user: ', user, ' hasContact: ', hasContact());
-      return;
-    }
     setTimeout(async () => {
+      const hasContact = () => contactList && contactList.find((x: IContactItemProps) => x.email === user.email && x.id == user.uid);
+      if (await hasContact()) {
+        console.log('[registerUserHasContact] - Usúario já cadastrado, user: ', user, ' hasContact: ', hasContact());
+        return;
+      }
       const request = await create({
         collectionName: CONTACTS_COLLECTION_NAME,
         payload: {
@@ -88,38 +88,41 @@ export const useFirebaseChat = () => {
       });
       return request;
     }, 3000)
-  
+
   }
 
   async function registerChatGptHasContact() {
 
-    // 1 - Verificar se contato está na lista
-    const chatGptUserId = '';
-    const hasContact = () => userIsValid() && contactList && contactList.find((x: IContactItemProps) => x.id === chatGptUserId);
-    if (!hasContact()) {
-      // console.log('Usúario ainda não cadastrado, user: ', user, ' hasContact: ', hasContact);
-      // const request = await create({
-      //   collectionName: CONTACTS_COLLECTION_NAME,
-      //   payload: {
-      //     email: user.email,
-      //     displayName:  user.displayName,
-      //     photoURL: user.photoURL,
-      //     id: user.uid,
-      //     userId: user.uid,
-      //   }
-      // });
-      // return request;
-    }
-    console.log('Usúario  cadastrado, user: ', user, ' hasContact: ', hasContact);
+    setTimeout(async () => {
+      const chatGptId = 'chat-gpt-id-default'; // TODO : Export
+      const hasContact = () => contactList && contactList.find((x: IContactItemProps) => x.id == chatGptId);
+      if (hasContact()) {
+        console.log('[registerChatGptHasContact] - Usúario já cadastrado, user: ', user, ' hasContact: ', hasContact());
+        return;
+      }
+      const request = await create({
+        collectionName: CONTACTS_COLLECTION_NAME,
+        payload: {
+          email: 'lemon.dev.chatgpt@open.ai',
+          displayName: 'Chat GPT',
+          photoURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1024px-ChatGPT_logo.svg.png',
+          id: chatGptId,
+          userId: user.uid,
+        }
+      }).then(() => {
+        console.log('[registerChatGptHasContact] - Usúario cadastrado, user: ', user, ' hasContact: ', hasContact());
+      });
+      return request;
+    }, 3000)
 
   }
 
   useEffect(() => {
     (async () => {
-      if(userIsValid()) {
+      if (userIsValid()) {
         await registerUserHasContact();
+        return await registerChatGptHasContact();
       }
-      // await registerChatGptHasContact();
     })();
   }, [user.uid])
 
