@@ -120,8 +120,9 @@ export const useFirebaseChat = () => {
   useEffect(() => {
     (async () => {
       if (userIsValid()) {
-        await registerUserHasContact();
-        return await registerChatGptHasContact();
+        return registerUserHasContact().then(() => {
+          registerChatGptHasContact();
+        });
       }
     })();
   }, [user.uid])
