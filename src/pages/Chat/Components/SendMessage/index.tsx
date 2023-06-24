@@ -30,7 +30,8 @@ export const SendMessageInput = () => {
 
     const handleSendMessage = async (event: any) => {
         event.preventDefault();
-        if (message.trim() !== '') {
+        const messageIsValid = message && message.trim() !== '';
+        if (messageIsValid) {            
             await sendMessage(message);
             setMessage('');
         }

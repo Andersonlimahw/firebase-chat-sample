@@ -8,6 +8,7 @@ import { EActionType } from "../../../store/flux";
 import { CONTACTS_COLLECTION_NAME, MESSAGE_COLLECTION_NAME, USERS_COLLECTION_NAME } from "../constants";
 import { onSnapshot } from "firebase/firestore";
 import { IContactItemProps } from '../Components/ContactList/ContactListItem';
+import { CHAT_GPT_ID } from "../../../services/openai";
 
 
 export const useFirebaseChat = () => {
@@ -57,7 +58,7 @@ export const useFirebaseChat = () => {
     return () => unsubscribe();
   }, []);
 
-  function userIsValid() {
+  function userIsValid() : boolean {
     return (
       user &&
       user.uid &&
@@ -68,13 +69,13 @@ export const useFirebaseChat = () => {
     )
   }
   async function registerUserHasContact() {
-    setTimeout(async () => {
+    return setTimeout(async () => {
       const hasContact = () => contactList && contactList.find((x: IContactItemProps) => x.email === user.email && x.id == user.uid);
       if (await hasContact()) {
         console.log('[registerUserHasContact] - Usúario já cadastrado, user: ', user, ' hasContact: ', hasContact());
-        return;
+        return true;
       }
-      const request = await create({
+      await create({
         collectionName: CONTACTS_COLLECTION_NAME,
         payload: {
           email: user.email,
@@ -86,33 +87,32 @@ export const useFirebaseChat = () => {
       }).then(() => {
         console.log('[registerUserHasContact] - Usúario cadastrado, user: ', user, ' hasContact: ', hasContact());
       });
-      return request;
+      return true;
     }, 3000)
 
   }
 
   async function registerChatGptHasContact() {
 
-    setTimeout(async () => {
-      const chatGptId = 'chat-gpt-id-default'; // TODO : Export
-      const hasContact = () => contactList && contactList.find((x: IContactItemProps) => x.id == chatGptId);
+    return setTimeout(async () => {
+      const hasContact = () => contactList && contactList.find((x: IContactItemProps) => x.id == CHAT_GPT_ID);
       if (hasContact()) {
         console.log('[registerChatGptHasContact] - Usúario já cadastrado, user: ', user, ' hasContact: ', hasContact());
-        return;
+        return true;
       }
-      const request = await create({
+      await create({
         collectionName: CONTACTS_COLLECTION_NAME,
         payload: {
           email: 'lemon.dev.chatgpt@open.ai',
           displayName: 'Chat GPT',
           photoURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1024px-ChatGPT_logo.svg.png',
-          id: chatGptId,
+          id: CHAT_GPT_ID,
           userId: user.uid,
         }
       }).then(() => {
         console.log('[registerChatGptHasContact] - Usúario cadastrado, user: ', user, ' hasContact: ', hasContact());
       });
-      return request;
+      return true;
     }, 3000)
 
   }
@@ -120,9 +120,7 @@ export const useFirebaseChat = () => {
   useEffect(() => {
     (async () => {
       if (userIsValid()) {
-        return registerUserHasContact().then(() => {
-          registerChatGptHasContact();
-        });
+        return await registerUserHasContact();        
       }
     })();
   }, [user.uid])
