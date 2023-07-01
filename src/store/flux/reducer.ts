@@ -46,5 +46,11 @@ export const reducer = (state: IState, { type, payload }: IAction) => {
         ...state,
         loading: payload.loading,
       };
+      case EActionType.SET_THEME:
+        return {
+          ...initialState,
+          ...state,
+          theme: payload.theme,
+        };
   }
 };

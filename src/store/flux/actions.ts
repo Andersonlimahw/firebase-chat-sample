@@ -7,6 +7,7 @@ export enum EActionType {
   LOAD_CONTACTS = "LOAD_CONTACTS",
   SEND_MESSAGE = "SEND_MESSAGE",
   SET_LOADING = "SET_LOADING",
+  SET_THEME = "SET_THEME",
 }
 
 export interface IAction {

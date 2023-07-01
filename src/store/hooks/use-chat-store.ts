@@ -17,6 +17,7 @@ export interface IState {
   messages: IMessageProps[];
   selectedContact?: IUser;
   contactList: IContactItemProps[];
+  theme: 'dark' | 'light' | 'green' | 'indigo' | 'purple' | 'red' | 'yellow' | 'pink'
 }
 
 const useChatStore = (set : any) => ({
