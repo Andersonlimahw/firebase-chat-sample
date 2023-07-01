@@ -17,7 +17,7 @@ export const AddContact = () => {
     const [completeContactList, setCompleteContactList] = React.useState<IContactItemProps[]>([]);
     const useChatStore = useChat((state: any) => state);
 
-    const { user, canAddSelfHasContact } = useChatStore;
+    const { contactList, user, canAddSelfHasContact } = useChatStore;
 
     async function handleAddContactItem(contact: IContactItemProps) {
         console.log('[handleAddContactItem] :  contact => ', contact);
@@ -46,22 +46,23 @@ export const AddContact = () => {
             userId: user.uid
         }).then(data => data);
         return onSnapshot(query, (snapshot) => {
+            const hasContact = (id : string) => contactList && contactList.find((contactItem : IContactItemProps) => contactItem.id === id);
+
+            setShowAddSelfHasContact(canAddSelfHasContact);
             if (canAddSelfHasContact) {
                 const updatedContacts = snapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...doc.data(),
-                }));
+                })).filter((x : any) => !hasContact(x.id) && (x.userId  != user.uid && x.id != user.uid));
                 console.log(`GET: ${CONTACTS_COLLECTION_NAME} : handleListsContacts: list => `, updatedContacts);
                 setCompleteContactList(updatedContacts as IContactItemProps[]);
-                setShowAddSelfHasContact(updatedContacts.length === 0);
             } else {
                 const updatedContacts = snapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...doc.data(),
-                })).filter((x) => x.id != user.uid);
+                })).filter((x : any) =>  !hasContact(x.id) && (x.id != user.uid && x.userId !== user.uid));
                 console.log(`GET: ${CONTACTS_COLLECTION_NAME} : handleListsContacts: list => `, updatedContacts);
-                setCompleteContactList(updatedContacts as IContactItemProps[]);
-                setShowAddSelfHasContact(updatedContacts.length === 0);
+                setCompleteContactList(updatedContacts as IContactItemProps[]);                
             }
         });
     }
@@ -85,7 +86,7 @@ export const AddContact = () => {
             </AlertDialog.Trigger>
 
             <AlertDialog.Portal>
-                <AlertDialog.Overlay />
+                <AlertDialog.Overlay className='w-full bg-black bg-opacity-80' />
                 <AlertDialog.Content
                     forceMount
                     className={clsx(
