@@ -2,26 +2,22 @@ import { Palette } from "@phosphor-icons/react";
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { useChat } from "../../../../store/hooks/use-chat-store";
 import { EActionType } from "../../../../store/flux";
-import { useState } from "react";
 
-const THEME_OPTIONS = [
-    'dark', 'light', 'green', 'indigo', 'purple', 'red', 'yellow', 'pink'
+export const THEME_OPTIONS = [
+    'dark', 'light', 'green', 'blue', 'purple', 'red', 'yellow', 'pink'
 ];
 
 export const ThemeSwitcher = () => {
     const useChatStore = useChat((state: any) => state);
     const { dispatch } = useChatStore;
 
-    const [bookmarksChecked, setBookmarksChecked] = useState(true);
-    const [urlsChecked, setUrlsChecked] = useState(false);
-    const [person, setPerson] = useState('pedro');
-
-
     function handleThemeChange(theme: string) {
         dispatch({
             type: EActionType.SET_THEME,
             payload: {
-                theme
+                theme: {
+                    type: theme
+                }
             }
         })
     }

@@ -9,15 +9,18 @@ import { Header } from './Components/Header';
 import { EmptyMessages } from './Components/EmptyMessages';
 import { Footer } from './Components/Footer';
 import { useFirebaseChat } from './hooks/use-firebase-chat';
+import { useChat } from '../../store/hooks/use-chat-store';
 
 export const Chat = () => {
-  const chatStore = useFirebaseChat();
+  const fireBaseStore = useFirebaseChat();
 
   const {
     selectedContact,
-    user,
-    handleResetSelectedContact
-  } = chatStore;
+    handleResetSelectedContact, 
+  } = fireBaseStore;
+
+  const chatStore = useChat();
+  const { theme } = chatStore;
 
 
   const hasSelectedContact = selectedContact && selectedContact.id !== '';
@@ -41,7 +44,7 @@ export const Chat = () => {
   return (
     <>
      
-      <div className="w-full h-40 bg-gradient-to-r from-green-900 to-green-400" >
+      <div className={`w-full h-40 bg-gradient-to-r ${theme.styles.gradient}`} >
         <ArrowLineLeft onClick={handleResetSelectedContact} size={48} className={`mx-2 py-2 cursor-pointer ${hasSelectedContact ? 'block' : 'hidden'}`} />
       </div>
 

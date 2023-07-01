@@ -11,13 +11,23 @@ export interface IUser {
   email: string;
   displayName: string;
 }
+export type IThemeType = {
+  type: 'dark' | 'light' | 'green' | 'blue' | 'purple' | 'red' | 'yellow' | 'pink'
+}
 
+export interface ThemeType { 
+  type: IThemeType,
+  styles: {
+    gradient: string,
+    background: string,
+  }
+}
 export interface IState { 
   user?: IUser;
   messages: IMessageProps[];
   selectedContact?: IUser;
   contactList: IContactItemProps[];
-  theme: 'dark' | 'light' | 'green' | 'indigo' | 'purple' | 'red' | 'yellow' | 'pink'
+  theme: ThemeType
 }
 
 const useChatStore = (set : any) => ({
