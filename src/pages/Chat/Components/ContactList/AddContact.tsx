@@ -46,23 +46,23 @@ export const AddContact = () => {
             userId: user.uid
         }).then(data => data);
         return onSnapshot(query, (snapshot) => {
-            const hasContact = (id : string) => contactList && contactList.find((contactItem : IContactItemProps) => contactItem.id === id);
+            const hasContact = (id: string) => contactList && contactList.find((contactItem: IContactItemProps) => contactItem.id === id);
 
             setShowAddSelfHasContact(canAddSelfHasContact);
             if (canAddSelfHasContact) {
                 const updatedContacts = snapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...doc.data(),
-                })).filter((x : any) => !hasContact(x.id) && (x.userId  != user.uid && x.id != user.uid));
+                })).filter((x: any) => !hasContact(x.id) && (x.userId != user.uid && x.id != user.uid));
                 console.log(`GET: ${CONTACTS_COLLECTION_NAME} : handleListsContacts: list => `, updatedContacts);
                 setCompleteContactList(updatedContacts as IContactItemProps[]);
             } else {
                 const updatedContacts = snapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...doc.data(),
-                })).filter((x : any) =>  !hasContact(x.id) && (x.id != user.uid && x.userId !== user.uid));
+                })).filter((x: any) => !hasContact(x.id) && (x.id != user.uid && x.userId !== user.uid));
                 console.log(`GET: ${CONTACTS_COLLECTION_NAME} : handleListsContacts: list => `, updatedContacts);
-                setCompleteContactList(updatedContacts as IContactItemProps[]);                
+                setCompleteContactList(updatedContacts as IContactItemProps[]);
             }
         });
     }
@@ -123,18 +123,19 @@ export const AddContact = () => {
 
                             )
                         }
-                        <div className="bg-grey-lighter flex-1 overflow-auto my-6">
-                            {
-                                completeContactList && completeContactList.map((contact: IContactItemProps, index: number) => (
-                                    <ContactListItem
-                                        key={`${contact.id}__${index}`}
-                                        handleOnClick={handleAddContactItem}
-                                        {...contact}
-                                    />
-                                ))
-                            }
-                        </div>
+
                     </AlertDialog.Description>
+                    <div className="bg-grey-lighter flex-1 overflow-auto my-6">
+                        {
+                            completeContactList && completeContactList.map((contact: IContactItemProps, index: number) => (
+                                <ContactListItem
+                                    key={`${contact.id}__${index}`}
+                                    handleOnClick={handleAddContactItem}
+                                    {...contact}
+                                />
+                            ))
+                        }
+                    </div>
                     <div className="mt-4 flex justify-end space-x-2">
                         <AlertDialog.Cancel
                             className={clsx(
