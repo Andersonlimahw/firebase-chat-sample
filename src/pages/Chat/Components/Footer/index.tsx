@@ -1,6 +1,7 @@
 import { signOut } from "firebase/auth";
 import { Power } from '@phosphor-icons/react';
 import { auth } from '../../../../services/firebase';
+import { AddContact } from "../ContactList/AddContact";
 
 export const Footer = () => {
     const handleLogout = async () => {
@@ -16,6 +17,7 @@ export const Footer = () => {
             <div className="py-2 px-3 bg-grey-lighter flex flex-row justify-between items-center">
                 <span className="cursor-pointer hover:scale-110">
                     {/* TODO: feature: adicionar contatos */}
+                    <AddContact />
                     <Power color="#ef4444" size={32} onClick={handleLogout} />
                 </span>
             </div>

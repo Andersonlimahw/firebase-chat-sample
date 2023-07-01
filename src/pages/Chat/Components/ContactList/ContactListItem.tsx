@@ -13,9 +13,10 @@ export interface IContactItemProps {
     to: string;
     from: string;
     count: number;
+    handleOnClick?: Function;
 }
 
-export const ContactListItem = (item: IContactItemProps) => {
+export const ContactListItem = ({ handleOnClick, ...item }: IContactItemProps) => {
     const useChatStore = useChat((state: any) => state);
     const navigate = useNavigate();
     const { dispatch } = useChatStore;
@@ -33,7 +34,14 @@ export const ContactListItem = (item: IContactItemProps) => {
     }
 
     return (
-        <div className="bg-zinc-800 px-3 flex items-center hover:bg-zinc-600 hover:shadow-sm cursor-pointer" onClick={() => handleContactSelection(item)}>
+        <div className="bg-zinc-800 px-3 flex items-center hover:bg-zinc-600 hover:shadow-sm cursor-pointer" onClick={ () => {
+            if(handleOnClick) {
+                handleOnClick(item);
+                handleContactSelection(item);
+            } else {
+                handleContactSelection(item)
+            }
+        }}>
             <div>
                 <img className="h-12 w-12 rounded-full" src={item?.photoURL} />
             </div>

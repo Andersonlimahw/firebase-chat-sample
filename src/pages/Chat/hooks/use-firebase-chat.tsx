@@ -1,20 +1,18 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-import { useEffect } from "react";
-import { auth, create, get, getMessagesByContactUserId } from "../../../services/firebase";
-import { IUser, useChat } from "../../../store/hooks/use-chat-store";
+import { useEffect, useMemo } from "react";
+import { auth, get, getMessagesByContactUserId } from "../../../services/firebase";
+import { useChat } from "../../../store/hooks/use-chat-store";
 import { EActionType } from "../../../store/flux";
 import { CONTACTS_COLLECTION_NAME, MESSAGE_COLLECTION_NAME, USERS_COLLECTION_NAME } from "../constants";
 import { onSnapshot } from "firebase/firestore";
 import { IContactItemProps } from '../Components/ContactList/ContactListItem';
-import { CHAT_GPT_ID } from "../../../services/openai";
 
 
 export const useFirebaseChat = () => {
   const chatStore = useChat((state: any) => state);
   const navigate = useNavigate();
-
 
   const {
     dispatch,
@@ -58,72 +56,11 @@ export const useFirebaseChat = () => {
     return () => unsubscribe();
   }, []);
 
-  function userIsValid() : boolean {
-    return (
-      user &&
-      user.uid &&
-      user.uid != "" &&
-      user.uid != "DEFAULT" &&
-      user.displayName != "" &&
-      user.email != ""
-    )
-  }
-  async function registerUserHasContact() {
-    return setTimeout(async () => {
-      const hasContact = () => contactList && contactList.find((x: IContactItemProps) => x.email === user.email && x.id == user.uid);
-      if (await hasContact()) {
-        console.log('[registerUserHasContact] - Usúario já cadastrado, user: ', user, ' hasContact: ', hasContact());
-        return true;
-      }
-      await create({
-        collectionName: CONTACTS_COLLECTION_NAME,
-        payload: {
-          email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          id: user.uid,
-          userId: user.uid,
-        }
-      }).then(() => {
-        console.log('[registerUserHasContact] - Usúario cadastrado, user: ', user, ' hasContact: ', hasContact());
-      });
-      return true;
-    }, 3000)
+  const candAddSelfHasContact = useMemo(() => {
+        const hasContact = () => contactList && contactList.find((x: IContactItemProps) => x.id == user?.uid);
+        return hasContact();
+  }, [contactList, user, user.uid]);
 
-  }
-
-  async function registerChatGptHasContact() {
-
-    return setTimeout(async () => {
-      const hasContact = () => contactList && contactList.find((x: IContactItemProps) => x.id == CHAT_GPT_ID);
-      if (hasContact()) {
-        console.log('[registerChatGptHasContact] - Usúario já cadastrado, user: ', user, ' hasContact: ', hasContact());
-        return true;
-      }
-      await create({
-        collectionName: CONTACTS_COLLECTION_NAME,
-        payload: {
-          email: 'lemon.dev.chatgpt@open.ai',
-          displayName: 'Chat GPT',
-          photoURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1024px-ChatGPT_logo.svg.png',
-          id: CHAT_GPT_ID,
-          userId: user.uid,
-        }
-      }).then(() => {
-        console.log('[registerChatGptHasContact] - Usúario cadastrado, user: ', user, ' hasContact: ', hasContact());
-      });
-      return true;
-    }, 3000)
-
-  }
-
-  useEffect(() => {
-    (async () => {
-      if (userIsValid()) {
-        return await registerUserHasContact();        
-      }
-    })();
-  }, [user.uid])
 
   async function subscribeToMessages(callback: any) {
     const contactId = selectedContact && selectedContact.id !== '' ? selectedContact.id : undefined;
@@ -253,6 +190,7 @@ export const useFirebaseChat = () => {
   return {
     selectedContact,
     contactList,
+    candAddSelfHasContact,
     user,
     messages,
     loading,

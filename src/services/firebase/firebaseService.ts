@@ -49,6 +49,20 @@ export const create = async ({ collectionName, payload } : CreateInput) : Promis
     }
 }
 
+export const list = async ({ collectionName } : GetInput) => {
+    try { 
+        const response = query(
+            collection(db, collectionName), 
+            orderBy('created', 'asc')
+        );       
+        console.log('[Firebase][get] - Success - url: ', collectionName, ' response: ', response);
+        return response;
+    } catch(ex) {
+        console.error('[Firebase][get] - Error: ', ex);
+        throw new Error(`Error to get document: ${ex}`);
+    }
+}
+
 export const get = async ({ collectionName, userId } : GetInput) => {
     try { 
         const response = query(
