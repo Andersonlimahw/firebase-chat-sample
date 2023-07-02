@@ -3,7 +3,7 @@ import { EActionType, IAction } from "./actions";
 import { initialState } from "./initial-state";
 
 const selectedGradientThemeStyles :  any = {     
-  'light': 'from-white-900 to-white-400',
+  'light': 'from-zinc-400 to-zinc-600',
   'green': 'from-green-900 to-green-400',
   'blue': 'from-blue-900 to-blue-400', 
   'purple': 'from-purple-900 to-purple-400', 

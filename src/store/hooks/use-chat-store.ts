@@ -24,8 +24,8 @@ export interface ThemeType {
 }
 export interface IState { 
   user?: IUser;
-  messages: IMessageProps[];
   selectedContact?: IUser;
+  messages: IMessageProps[];  
   contactList: IContactItemProps[];
   theme: ThemeType
 }
